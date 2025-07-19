@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CraftVietnam - Register</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for general text -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom right, #FAF9F7, #F6EBEE);
+            display: flex;
+            flex-direction: column; /* Stack children vertically */
+            align-items: center; /* Center items horizontally */
+            min-height: 100vh;
+            padding: 20px; /* Overall padding from screen edges */
+            box-sizing: border-box;
+        }
+        .signup-card {
+            background-color: #FBFAF9;
+            border-radius: 0.75rem;
+            border: 1px solid #E7DFDA;
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            margin-bottom: 40px; /* Consistent margin to the bottom of the form box */
+        }
+        .input-field {
+            border: 1px solid #E7DFDA;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            font-size: 1rem;
+            color: #8C7B73;
+            outline: none;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .input-field::placeholder {
+            color: #8C7B73;
+        }
+        .input-field::-webkit-input-placeholder {
+            color: #8C7B73;
+        }
+        .input-field::-moz-placeholder {
+            color: #8C7B73;
+            opacity: 1;
+        }
+        .input-field:-ms-input-placeholder {
+            color: #8C7B73;
+        }
+        .input-field::placeholder {
+            color: #8C7B73;
+        }
+
+        .input-field:focus {
+            border-color: #d1c4b8;
+            box-shadow: 0 0 0 3px rgba(231, 223, 218, 0.5);
+        }
+        .gradient-text-signup {
+            background: linear-gradient(to right, #FFD700, #FF8C00, #F18258);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+        .gradient-button-signup {
+            background: linear-gradient(to right, #FFD700, #FF8C00, #F18258); /* Original gradient */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            width: 100%;
+            transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Initial shadow */
+        }
+        .gradient-button-signup:hover {
+            background: linear-gradient(to right, #FFE033, #FF9933, #F59070); /* Slightly brighter version of original gradient */
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+        }
+        .social-button {
+            border: 1px solid #E7DFDA;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            color: #4a5568;
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+        .social-button:hover {
+            background-color: #f0f2f5;
+            border-color: #E7DFDA;
+        }
+        .back-link-wrapper {
+            align-self: flex-start;
+            margin-bottom: 40px;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+        .back-link-wrapper a {
+            display: flex;
+            align-items: center;
+            color: #8C7B73;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+        .back-link-wrapper a:hover {
+            color: #f97316;
+        }
+        .back-link-wrapper i {
+            margin-right: 8px;
+        }
+        .text-accent-orange {
+            color: #E75321;
+        }
+        .text-custom-grey {
+            color: #8C7B73;
+        }
+        .text-black-label {
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-link-wrapper">
+        <a href="main.html">
+            <i class="fas fa-arrow-left"></i> Back to CraftVietnam
+        </a>
+    </div>
+
+    <form id="unified-signup-form" class="signup-card">
+        <h1 class="text-2xl font-bold mb-2 gradient-text-signup">Register for CraftVietnam</h1>
+        <p class="mb-8 text-custom-grey">Choose your account type to get started!</p>
+
+        <!-- Message display area -->
+        <div id="message-display" class="hidden p-3 rounded-md text-center text-sm mb-4"></div>
+
+        <!-- Role Selection -->
+        <div class="mb-6 flex justify-center space-x-4">
+            <label class="inline-flex items-center">
+                <input type="radio" name="accountType" value="buyer" class="form-radio text-orange-600" checked>
+                <span class="ml-2 text-gray-700 font-medium">I am a Buyer</span>
+            </label>
+            <label class="inline-flex items-center">
+                <input type="radio" name="accountType" value="shop_owner" class="form-radio text-orange-600">
+                <span class="ml-2 text-gray-700 font-medium">I am a Shop Owner</span>
+            </label>
+        </div>
+
+        <!-- Common Fields -->
+        <div class="mb-4 text-left">
+            <label for="email" class="block text-black-label text-sm font-medium mb-2">Email</label>
+            <div class="relative">
+                <input type="email" id="email" placeholder="Enter your email" class="input-field pl-10">
+                <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-custom-grey"></i>
+            </div>
+        </div>
+
+        <div class="mb-4 text-left">
+            <label for="password" class="block text-black-label text-sm font-medium mb-2">Password</label>
+            <div class="relative">
+                <input type="password" id="password" placeholder="Enter your password" class="input-field pl-10">
+                <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-custom-grey"></i>
+                <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-custom-grey hover:text-gray-600 focus:outline-none" id="toggle-password">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="mb-4 text-left">
+            <label for="confirm-password" class="block text-black-label text-sm font-medium mb-2">Confirm Password</label>
+            <div class="relative">
+                <input type="password" id="confirm-password" placeholder="Confirm your password" class="input-field pl-10">
+                <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-custom-grey"></i>
+                <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-custom-grey hover:text-gray-600 focus:outline-none" id="toggle-confirm-password">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Buyer Specific Fields -->
+        <div id="buyer-fields">
+            <div class="mb-4 text-left">
+                <label for="buyer-name" class="block text-black-label text-sm font-medium mb-2">Your Name</label>
+                <div class="relative">
+                    <input type="text" id="buyer-name" placeholder="Enter your name" class="input-field pl-10">
+                    <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-custom-grey"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shop Owner Specific Fields -->
+        <div id="shop-owner-fields" class="hidden">
+            <div class="mb-4 text-left">
+                <label for="shop-name" class="block text-black-label text-sm font-medium mb-2">Shop Name</label>
+                <div class="relative">
+                    <input type="text" id="shop-name" placeholder="Enter your shop name" class="input-field pl-10">
+                    <i class="fas fa-store absolute left-3 top-1/2 transform -translate-y-1/2 text-custom-grey"></i>
+                </div>
+            </div>
+
+            <div class="mb-4 text-left">
+                <label for="shop-owner-name" class="block text-black-label text-sm font-medium mb-2">Your Name</label>
+                <div class="relative">
+                    <input type="text" id="shop-owner-name" placeholder="Enter your name" class="input-field pl-10">
+                    <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-custom-grey"></i>
+                </div>
+            </div>
+
+            <div class="mb-4 text-left">
+                <label for="shop-address" class="block text-black-label text-sm font-medium mb-2">Shop Address</label>
+                <div class="relative">
+                    <input type="text" id="shop-address" placeholder="Enter your shop address" class="input-field pl-10">
+                    <i class="fas fa-map-marker-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-custom-grey"></i>
+                </div>
+            </div>
+
+            <div class="mb-6 text-left">
+                <label for="shop-phone" class="block text-black-label text-sm font-medium mb-2">Shop Phone Number</label>
+                <div class="relative">
+                    <input type="tel" id="shop-phone" placeholder="Enter your shop phone number" class="input-field pl-10">
+                    <i class="fas fa-phone absolute left-3 top-1/2 transform -translate-y-1/2 text-custom-grey"></i>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="gradient-button-signup mb-6">Register</button>
+
+        <div class="flex items-center justify-center my-6">
+            <div class="flex-grow border-t border-gray-300"></div>
+            <span class="mx-4 text-custom-grey text-sm">OR</span>
+            <div class="flex-grow border-t border-gray-300"></div>
+        </div>
+
+        <p class="mt-8 text-sm text-custom-grey">
+            Already have an account? <a href="login.html" class="font-medium text-accent-orange">Sign In</a>
+        </p>
+    </form>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined'
+            ? JSON.parse(__firebase_config)
+            : {
+            apiKey: "AIzaSyD1wat0lrESovvsgy2x5Kf4M4jQsR2KHHs",
+            authDomain: "ffb-hackathon.firebaseapp.com",
+            projectId: "ffb-hackathon",
+            storageBucket: "ffb-hackathon.firebasestorage.app",
+            messagingSenderId: "411311658832",
+            appId: "1:411311658832:web:7916ad56ce15f43d263e55",
+            measurementId: "G-XMB5N1R5PG"
+        };
+
+        let app;
+        let auth;
+        let db;
+
+        window.onload = async () => {
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        console.log("User is signed in:", user.uid);
+                    } else {
+                        console.log("No user is signed in.");
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error initializing Firebase:", error);
+                displayMessage("Firebase initialization failed. Please try again later.", "error");
+            }
+
+            const unifiedSignupForm = document.getElementById('unified-signup-form');
+            if (unifiedSignupForm) {
+                unifiedSignupForm.addEventListener('submit', handleUnifiedSignup);
+            }
+
+            // Toggle password visibility
+            document.getElementById('toggle-password').addEventListener('click', function() {
+                const passwordField = document.getElementById('password');
+                const icon = this.querySelector('i');
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordField.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+
+            document.getElementById('toggle-confirm-password').addEventListener('click', function() {
+                const confirmPasswordField = document.getElementById('confirm-password');
+                const icon = this.querySelector('i');
+                if (confirmPasswordField.type === 'password') {
+                    confirmPasswordField.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    confirmPasswordField.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+
+            // Handle account type selection
+            document.querySelectorAll('input[name="accountType"]').forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    const buyerFields = document.getElementById('buyer-fields');
+                    const shopOwnerFields = document.getElementById('shop-owner-fields');
+                    if (event.target.value === 'buyer') {
+                        buyerFields.classList.remove('hidden');
+                        shopOwnerFields.classList.add('hidden');
+                    } else {
+                        buyerFields.classList.add('hidden');
+                        shopOwnerFields.classList.remove('hidden');
+                    }
+                });
+            });
+        };
+
+        async function handleUnifiedSignup(event) {
+            event.preventDefault();
+
+            const accountType = document.querySelector('input[name="accountType"]:checked').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const messageDiv = document.getElementById('message-display');
+
+            messageDiv.textContent = '';
+            messageDiv.classList.add('hidden');
+
+            if (!email || !password || !confirmPassword) {
+                displayMessage("Please fill in all common fields.", "error");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                displayMessage("Passwords do not match.", "error");
+                return;
+            }
+
+            let userData = {
+                uid: '', // Will be set after user creation
+                email: email,
+                createdAt: new Date().toISOString(),
+                role: accountType
+            };
+            let collectionPath;
+            let redirectPage;
+
+            if (accountType === 'buyer') {
+                const buyerName = document.getElementById('buyer-name').value;
+                if (!buyerName) {
+                    displayMessage("Please enter your name.", "error");
+                    return;
+                }
+                userData.name = buyerName;
+                userData.address = ''; // As per user's request
+                userData.phoneNumber = ''; // As per user's request
+                collectionPath = `artifacts/${appId}/users`;
+                redirectPage = 'main.html'; // Redirect to main page for buyers
+            } else { // accountType === 'shop_owner'
+                const shopName = document.getElementById('shop-name').value;
+                const shopOwnerName = document.getElementById('shop-owner-name').value;
+                const shopAddress = document.getElementById('shop-address').value;
+                const shopPhone = document.getElementById('shop-phone').value;
+
+                if (!shopName || !shopOwnerName || !shopAddress || !shopPhone) {
+                    displayMessage("Please fill in all shop owner fields.", "error");
+                    return;
+                }
+                userData.shopName = shopName;
+                userData.name = shopOwnerName;
+                userData.shopAddress = shopAddress;
+                userData.shopPhone = shopPhone;
+                collectionPath = `artifacts/${appId}/shop_users`;
+                redirectPage = 'shop-dashboard.html'; // Redirect to shop owner dashboard
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                userData.uid = user.uid; // Set uid after user is created
+
+                const userProfileRef = doc(db, `${collectionPath}/${user.uid}/profile/data`);
+                await setDoc(userProfileRef, userData);
+
+                console.log(`${accountType} signed up and profile saved:`, user.uid);
+                displayMessage(`${accountType === 'buyer' ? 'Registration' : 'Shop registration'} successful! Redirecting...`, "success");
+                setTimeout(() => {
+                    window.location.href = redirectPage;
+                }, 1500);
+
+            } catch (error) {
+                const errorCode = error.code;
+                let errorMessage = "An unknown error occurred. Please try again.";
+
+                switch (errorCode) {
+                    case 'auth/email-already-in-use':
+                        errorMessage = "The email address is already in use by another account.";
+                        break;
+                    case 'auth/invalid-email':
+                        errorMessage = "The email address is not valid.";
+                        break;
+                    case 'auth/operation-not-allowed':
+                        errorMessage = "Email/password accounts are not enabled. Please contact support.";
+                        break;
+                    case 'auth/weak-password':
+                        errorMessage = "The password is too weak. Please choose a stronger password.";
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your internet connection.";
+                        break;
+                    default:
+                        errorMessage = `Registration failed: ${error.message}`;
+                        break;
+                }
+                console.error("Signup error:", errorCode, error.message);
+                displayMessage(errorMessage, "error");
+            }
+        }
+
+        function displayMessage(message, type) {
+            const messageDiv = document.getElementById('message-display');
+            messageDiv.textContent = message;
+            messageDiv.className = `p-3 rounded-md text-center text-sm mb-4 ${type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
+            messageDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artipost - Authentic Vietnamese Artisan Marketplace</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for general text -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <!-- GSAP ScrollTrigger Plugin CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        .hero-background {
+            /* Updated to use "bg.png" as the background image */
+            background-image: url('bg.png'); /* Placeholder for bg.png */
+            background-size: cover;
+            background-position: center;
+            position: relative; /* Ensure main is relative for absolute positioning of children */
+            /* Darker overlay to mimic the original image's mood */
+            background-blend-mode: multiply;
+            background-color: rgba(0, 0, 0, 0.4); /* Adjusted for darker overlay */
+        }
+        .hero-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Gradient overlay for depth, adjusted for stronger effect */
+            background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%);
+        }
+        /* Custom style for the gradient text - made more drastic with salmon color */
+        .gradient-text {
+            background: linear-gradient(to right, #FFD700, #FF8C00, #F18258); /* Gold to Dark Orange to Salmon */
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent; /* Fallback for browsers that don't support -webkit-text-fill-color */
+        }
+
+        /* Glass-like effect for the authentic marketplace tag */
+        .glass-effect {
+            background-color: rgba(100, 50, 10, 0.4); /* Semi-transparent brown-orange tint */
+            backdrop-filter: blur(8px); /* Blur effect */
+            -webkit-backdrop-filter: blur(8px); /* Safari support */
+        }
+
+        /* Custom drop shadow for the image to follow its shape - made deeper */
+        .custom-drop-shadow {
+            filter: drop-shadow(8px 8px 15px rgba(0, 0, 0, 0.7)); /* x-offset y-offset blur-radius color */
+        }
+
+        /* Navbar scroll styles */
+        .navbar-scrolled {
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            /* Removed color property here as individual elements will handle their color transition */
+        }
+        .navbar-scrolled .nav-link {
+            color: #2d3748; /* Darker text for links */
+        }
+        .navbar-scrolled .sign-in-btn {
+            background-color: #f0f2f5; /* Light gray for sign in button */
+            color: #2d3748; /* Dark text */
+            border-color: #e2e8f0; /* Light border */
+        }
+        .navbar-scrolled .sell-btn {
+            background-color: #f97316; /* Orange-500 */
+            color: #ffffff;
+        }
+        .navbar-scrolled .logo-text {
+            color: #2d3748; /* Darker text for logo */
+        }
+        .navbar-scrolled .icon-btn {
+            color: #2d3748; /* Darker icons */
+        }
+
+        /* Gradient for For Artisans section */
+        .artisans-gradient-bg {
+            background: linear-gradient(to right, #F6E6DF, #F7F1E1); /* Updated light orange/cream gradient */
+        }
+
+        /* Gradient for footer "Artipost" text */
+        .footer-gradient-text {
+            background: linear-gradient(to right, #FFD700, #FF8C00, #F18258); /* Gold to Dark Orange to Salmon */
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent; /* Fallback for browsers that don't support -webkit-text-fill-color */
+        }
+
+        /* Craft Card Hover Effect */
+        .craft-card {   
+            pointer-events: none; /* Disable pointer events initially */
+            flex: 1; /* Allow cards to grow and shrink, taking up equal space */
+            position: relative; /* Ensure z-index works for hover effect */
+            z-index: 1; /* Default z-index */
+            min-width: 200px; /* Adjust min-width to allow more shrinking if needed */
+        }
+
+        .craft-card:hover {
+            z-index: 10; /* Bring hovered card to front */
+        }
+
+        /* Custom grey color for text */
+        .text-custom-grey-landing {
+            color: #8C7B73;
+        }
+    </style>
+</head>
+<body class="bg-[#FBFAF9] text-gray-800">
+
+    <!-- Header Section - Contains logo, navigation, and action buttons -->
+    <!-- Added transition-colors to main-navbar for background and text color changes -->
+    <header id="main-navbar" class="fixed top-0 left-0 right-0 z-50 py-3 px-6 md:px-10 flex items-center justify-between bg-transparent text-white transition-all duration-300">
+        <div class="flex items-center space-x-8">
+            <!-- Artipost Logo -->
+            <!-- Added transition-colors to logo-text -->
+            <div class="text-lg font-bold logo-text gsap-navbar-element transition-colors duration-300">Artipost</div>
+            <!-- Navigation Links -->
+            <nav class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-5 text-sm">
+                <!-- Added transition-colors to nav-link -->
+                <a href="#" class="nav-link text-white hover:text-orange-600 gsap-navbar-element transition-colors duration-300">Artisans</a>
+                <a href="#" class="nav-link text-white hover:text-orange-600 gsap-navbar-element transition-colors duration-300">Categories</a>
+                <a href="#" class="nav-link text-white hover:text-orange-600 gsap-navbar-element transition-colors duration-300">How it Works</a>
+                <a href="#" class="nav-link text-white hover:text-orange-600 gsap-navbar-element transition-colors duration-300">About</a>
+            </nav>
+        </div>
+        <div class="flex items-center space-x-3">
+            <!-- Search Icon Button -->
+            <!-- Added transition-colors to icon-btn -->
+            <button class="icon-btn text-white hover:text-orange-600 p-1.5 rounded-full hover:bg-gray-100 gsap-navbar-element transition-colors duration-300">
+                <i class="fas fa-search"></i>
+            </button>
+            <!-- User Icon Button -->
+            <!-- Added transition-colors to icon-btn -->
+            <button class="icon-btn text-white hover:text-orange-600 p-1.5 rounded-full hover:bg-gray-100 gsap-navbar-element transition-colors duration-300">
+                <i class="fas fa-user"></i>
+            </button>
+            <!-- Sign In Button -->
+            <!-- Updated href to link to the new login page -->
+            <a href="login.html" class="sign-in-btn bg-white bg-opacity-20 text-white border border-white border-opacity-30 px-5 py-2.5 rounded-full hover:bg-opacity-30 shadow-sm text-base gsap-navbar-element transition-colors duration-300">Sign In</a>
+            <!-- Sell on Artipost Button -->
+            <!-- Updated href to link to the new login page (assuming selling also requires login) -->
+            <a href="login.html" class="sell-btn bg-orange-500 text-white px-5 py-2.5 rounded-full hover:bg-orange-600 shadow-lg text-base gsap-navbar-element transition-colors duration-300">Sell on Artipost</a>
+        </div>
+    </header>
+
+    <!-- Hero Section - Main content area with background and foreground elements -->
+    <main class="hero-background min-h-screen flex items-center justify-start pt-24 pb-12 relative overflow-hidden pl-6 md:pl-12 lg:pl-24">
+        <!-- Container for text and foreground -->
+        <div class="container mx-auto flex flex-col lg:flex-row items-center justify-between relative z-10 h-[550px]">
+            <!-- Text Content Column -->
+            <div class="text-white text-left lg:w-1/2">
+                <!-- Authentic Tag with Star Icon -->
+                <div class="glass-effect border border-orange-700 rounded-full py-2 px-4 inline-flex items-center mb-6 gsap-hero-text">
+                    <p class="text-base font-medium text-white">
+                        <i class="fas fa-star text-yellow-400 mr-2"></i>Authentic Vietnamese Artisan Marketplace
+                    </p>
+                </div>
+                <!-- Main Headline -->
+                <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-5 gsap-hero-text">
+                    Discover Authentic <br class="hidden md:inline"><span class="gradient-text">Vietnamese Crafts</span>
+                </h1>
+                <!-- Description Text -->
+                <p class="text-lg mb-8 leading-relaxed gsap-hero-text">
+                    Connect directly with skilled Vietnamese artisans. Purchase traditional lacquerware, pottery, and paintings. Safe worldwide shipping for treasures too precious to carry.
+                </p>
+                <!-- Call to Action Button and Search Input -->
+                <div class="flex flex-col sm:flex-row items-center justify-start space-y-4 sm:space-y-0 sm:space-x-4 mb-12">
+                    <!-- Added transition-colors to this button -->
+                    <button id="browse-crafts-btn" class="bg-orange-600 text-white px-7 py-3.5 rounded-full text-lg font-semibold shadow-xl flex items-center gsap-hero-button transition-colors duration-300 hover:bg-orange-700">
+                        Browse Crafts <i class="fas fa-arrow-right ml-3"></i>
+                    </button>
+                    <input type="text" id="hero-search-input" placeholder="Search for something..." class="bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-white px-5 py-3.5 rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 w-full sm:w-auto text-base gsap-hero-button">
+                </div>
+
+                <!-- Three Feature Points at the Bottom -->
+                <div class="flex flex-wrap justify-start gap-5 text-base gsap-hero-text">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-globe text-orange-400"></i>
+                        <span>Worldwide Shipping</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-shield-alt text-orange-400"></i>
+                        <span>Authentic Guarantee</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-users text-orange-400"></i>
+                        <span>500+ Happy Customers</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- New Section: Explore Traditional Crafts -->
+    <section class="py-16 px-2 md:px-4 lg:px-8 bg-gray-100">
+        <div class="container mx-auto text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 gsap-section-header">Explore Traditional Crafts</h2>
+            <!-- Changed text size to text-base and color to custom grey -->
+            <p class="text-base text-custom-grey-landing max-w-3xl mx-auto gsap-section-header">
+                Discover authentic Vietnamese artisan work, each piece telling a unique story of tradition and craftsmanship
+            </p>
+        </div>
+
+        <!-- Added pt-8 to give space for hover effect -->
+        <div class="flex gap-4 pb-4 pt-8 gsap-craft-cards-container flex-nowrap">
+            <!-- Lacquerware Card -->
+            <div class="bg-white rounded-lg border border-[#E7DFDA] overflow-hidden craft-card" data-craft-type="Lacquerware">
+                <img src="https://vietnamauthentic.com/wp-content/uploads/2023/06/lacquerware-from-vietnam-05.jpg" alt="Lacquerware" class="w-full h-80 object-cover">
+                <div class="p-6 flex flex-col flex-grow justify-between">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Lacquerware</h3>
+                    <p class="text-base text-custom-grey-landing mb-4">
+                        Exquisite bowls, trays, and decorative pieces with traditional Vietnamese lacquer techniques
+                    </p>
+                    <p class="text-orange-600 font-medium text-lg mb-4">120+ Items</p>
+                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold flex items-center justify-end">
+                        View Collection <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pottery & Ceramics Card -->
+            <div class="bg-white rounded-lg border border-[#E7DFDA] overflow-hidden craft-card" data-craft-type="Pottery & Ceramics">
+                <img src="https://vir.com.vn/stores/news_dataimages/Etienne/112021/17/11/4526_BPQ_phu_dung_chu_YYu_compressed.jpg?rt=20211117114724" alt="Pottery & Ceramics" class="w-full h-80 object-cover">
+                <div class="p-6 flex flex-col flex-grow justify-between">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Pottery & Ceramics</h3>
+                    <p class="text-base text-custom-grey-landing mb-4">
+                        Handcrafted vases, tea sets, and artistic pieces from master potters
+                    </p>
+                    <p class="text-orange-600 font-medium text-lg mb-4">85+ Items</p>
+                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold flex items-center justify-end">
+                        View Collection <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Traditional Paintings Card -->
+            <div class="bg-white rounded-lg border border-[#E7DFDA] overflow-hidden craft-card" data-craft-type="Traditional Paintings">
+                <img src="https://www.nguyenartgallery.com/wp-content/uploads/Material-and-Technique-used-in-Silk-Painting.jpg" alt="Traditional Paintings" class="w-full h-80 object-cover">
+                <div class="p-6 flex flex-col flex-grow justify-between">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Traditional Paintings</h3>
+                    <p class="text-base text-custom-grey-landing mb-4">
+                        Beautiful silk paintings and lacquer art depicting Vietnamese culture
+                    </p>
+                    <p class="text-orange-600 font-medium text-lg mb-4">60+ Items</p>
+                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold flex items-center justify-end">
+                        View Collection <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Handwoven Textiles Card -->
+            <div class="bg-white rounded-lg border border-[#E7DFDA] overflow-hidden craft-card" data-craft-type="Handwoven Textiles">
+                <img src="https://placehold.co/600x450/A0522D/FFFFFF?text=Handwoven+Textiles" alt="Handwoven Textiles" class="w-full h-80 object-cover">
+                <div class="p-6 flex flex-col flex-grow justify-between">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Handwoven Textiles</h3>
+                    <p class="text-base text-custom-grey-landing mb-4">
+                        Intricately woven fabrics, scarves, and garments showcasing ethnic patterns.
+                    </p>
+                    <p class="text-orange-600 font-medium text-lg mb-4">95+ Items</p>
+                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold flex items-center justify-end">
+                        View Collection <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Section: How Artipost Works -->
+    <section class="py-16 px-2 md:px-4 lg:px-8" style="background-color: #F8F7F5;">
+        <div class="container mx-auto text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 gsap-how-it-works-header">How Artipost Works</h2>
+            <!-- Changed text size to text-base and color to custom grey -->
+            <p class="text-base text-custom-grey-landing max-w-3xl mx-auto gsap-how-it-works-header">
+                From artisan workshop to your doorstep, we make collecting Vietnamese crafts simple and secure
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 gsap-how-it-works-container">
+            <!-- Discover Card -->
+            <!-- Changed border-gray-200 to border-[#E7DFDA] -->
+            <div class="bg-white rounded-lg border border-[#E7DFDA] p-6 text-center shadow-sm how-it-works-card">
+                <div class="flex items-center justify-center w-16 h-16 mx-auto rounded-full bg-orange-100 text-orange-600 text-3xl mb-4 border border-[#E7DFDA]">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Discover</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Browse authentic crafts from verified Vietnamese artisans
+                </p>
+                <div class="text-3xl font-bold text-orange-400">1</div>
+            </div>
+
+            <!-- Purchase Card -->
+            <!-- Changed border-gray-200 to border-[#E7DFDA] -->
+            <div class="bg-white rounded-lg border border-[#E7DFDA] p-6 text-center shadow-sm how-it-works-card">
+                <div class="flex items-center justify-center w-16 h-16 mx-auto rounded-full bg-orange-100 text-orange-600 text-3xl mb-4 border border-[#E7DFDA]">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Purchase</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Buy securely with international payment options
+                </p>
+                <div class="text-3xl font-bold text-orange-400">2</div>
+            </div>
+
+            <!-- Ship Safely Card -->
+            <!-- Changed border-gray-200 to border-[#E7DFDA] -->
+            <div class="bg-white rounded-lg border border-[#E7DFDA] p-6 text-center shadow-sm how-it-works-card">
+                <div class="flex items-center justify-center w-16 h-16 mx-auto rounded-full bg-orange-100 text-orange-600 text-3xl mb-4 border border-[#E7DFDA]">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Ship Safely</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Professional packaging ensures your treasures arrive intact
+                </p>
+                <div class="text-3xl font-bold text-orange-400">3</div>
+            </div>
+
+            <!-- Enjoy Card -->
+            <!-- Changed border-gray-200 to border-[#E7DFDA] -->
+            <div class="bg-white rounded-lg border border-[#E7DFDA] p-6 text-center shadow-sm how-it-works-card">
+                <div class="flex items-center justify-center w-16 h-16 mx-auto rounded-full bg-orange-100 text-orange-600 text-3xl mb-4 border border-[#E7DFDA]">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Enjoy</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Own a piece of Vietnamese culture and support artisans
+                </p>
+                <div class="text-3xl font-bold text-orange-400">4</div>
+            </div>
+        </div>
+
+        <!-- New Section: For Artisans - Integrated and smaller -->
+        <!-- Removed the container mx-auto div that was wrapping this section -->
+        <!-- Changed border-orange-200 to border-[#E7DFDA] -->
+        <div class="artisans-gradient-bg rounded-lg border border-[#E7DFDA] p-8 mt-16 shadow-md justify-center flex flex-col items-center">
+            <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-4 text-center gsap-for-artisans-header">For Artisans: Share Your Craft with the World</h2>
+            <div class="w-1/2">
+                <!-- Changed text size to text-base and color to custom grey -->
+                <p class="text-base text-custom-grey-landing mb-6 text-center gsap-for-artisans-content">
+                    Join our platform to showcase your traditional Vietnamese crafts to international buyers. We handle the
+                    technology, marketing, and shipping - you focus on creating beautiful art.
+                </p>
+            </div>
+            <!-- Added bullet points as per the image -->
+            <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-gray-700 mt-4">
+                <div class="flex items-center">
+                    <span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span> No listing fees
+                </div>
+                <div class="flex items-center">
+                    <span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span> Global shipping support
+                </div>
+                <div class="flex items-center">
+                    <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span> Marketing assistance
+                </div>
+                <div class="flex items-center">
+                    <span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span> Fair pricing
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <!-- Changed footer background color to #171312 -->
+    <footer class="bg-[#171312] text-white py-12 px-6 md:px-10">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Artipost Column -->
+            <div class="gsap-footer-element">
+                <!-- Applied footer-gradient-text class to Artipost text -->
+                <h3 class="text-lg font-bold mb-4 footer-gradient-text">Artipost</h3>
+                <p class="text-gray-400 text-sm mb-6">
+                    Connecting Vietnamese artisans with the world. Authentic traditional crafts, safely shipped to your doorstep.
+                </p>
+                <div class="flex space-x-4 text-gray-400">
+                    <a href="#" class="hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="hover:text-white"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="hover:text-white"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+
+            <!-- Shop Column -->
+            <div class="gsap-footer-element">
+                <h3 class="text-lg font-bold mb-4">Shop</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="text-gray-400 hover:text-white">Lacquerware</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Pottery</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Paintings</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">All Categories</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Featured Artisans</a></li>
+                </ul>
+            </div>
+
+            <!-- Support Column -->
+            <div class="gsap-footer-element">
+                <h3 class="text-lg font-bold mb-4">Support</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><a href="#" class="text-gray-400 hover:text-white">Help Center</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Shipping Info</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Returns</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Size Guide</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Column -->
+            <div class="gsap-footer-element">
+                <h3 class="text-lg font-bold mb-4">Contact</h3>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex items-center space-x-2 text-gray-400">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Ho Chi Minh City, Vietnam</span>
+                    </li>
+                    <li class="flex items-center space-x-2 text-gray-400">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:hello@artipost.com" class="hover:text-white">hello@artipost.com</a>
+                    </li>
+                    <li class="flex items-center space-x-2 text-gray-400">
+                        <i class="fas fa-phone"></i>
+                        <span>+84 123 456 789</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Copyright and Policy Links -->
+        <!-- Keeping border-gray-700 for contrast on dark footer -->
+        <div class="container mx-auto text-center text-gray-500 text-xs mt-8 border-t border-gray-700 pt-6">
+            <p>&copy; 2024 Artipost. All rights reserved.</p>
+            <div class="flex justify-center space-x-4 mt-2">
+                <a href="#" class="hover:text-white">Privacy Policy</a>
+                <a href="#" class="hover:text-white">Terms of Service</a>
+                <a href="#" class="hover:text-white">Cookie Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Register ScrollTrigger plugin
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('main-navbar');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const signInBtn = document.querySelector('.sign-in-btn');
+        const sellBtn = document.querySelector('.sell-btn');
+        const logoText = document.querySelector('.logo-text');
+        const iconBtns = document.querySelectorAll('.icon-btn');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) { // Adjust this value as needed
+                navbar.classList.remove('bg-transparent', 'text-white');
+                navbar.classList.add('bg-white', 'navbar-scrolled');
+                navLinks.forEach(link => link.classList.remove('text-white'));
+                iconBtns.forEach(btn => btn.classList.remove('text-white'));
+                signInBtn.classList.remove('bg-opacity-20', 'border-white', 'border-opacity-30', 'text-white', 'hover:bg-opacity-30');
+                signInBtn.classList.add('bg-gray-100', 'border-gray-300', 'text-gray-700', 'hover:bg-gray-50');
+                sellBtn.classList.remove('bg-orange-500', 'text-white');
+                sellBtn.classList.add('bg-orange-600', 'text-white'); // Keep orange for sell button
+                logoText.classList.remove('text-white');
+                logoText.classList.add('text-gray-900');
+            } else {
+                navbar.classList.remove('bg-white', 'navbar-scrolled');
+                navbar.classList.add('bg-transparent', 'text-white');
+                navLinks.forEach(link => link.classList.add('text-white'));
+                iconBtns.forEach(btn => btn.classList.add('text-white'));
+                signInBtn.classList.remove('bg-gray-100', 'border-gray-300', 'text-gray-700', 'hover:bg-gray-50');
+                signInBtn.classList.add('bg-opacity-20', 'border-white', 'border-opacity-30', 'text-white', 'hover:bg-opacity-30');
+                sellBtn.classList.remove('bg-orange-600', 'text-white');
+                sellBtn.classList.add('bg-orange-500', 'text-white');
+                logoText.classList.remove('text-gray-900');
+                logoText.classList.add('text-white');
+            }
+        });
+
+        // --- GSAP Animations ---
+
+        // 1. Navbar elements (initial load)
+        gsap.from(".gsap-navbar-element", {
+            y: -50, // Start slightly above
+            opacity: 0,
+            duration: 1,
+            stagger: 0.08,
+            ease: "power3.out",
+            delay: 0.2
+        });
+
+        // 2. Hero Section Text Content (staggered fade-in from left)
+        gsap.from(".gsap-hero-text", {
+            x: -100, // Start from left
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.2,
+            ease: "power3.out",
+            delay: 0.5
+        });
+
+        // 3. Hero Section Buttons and Input (staggered fade-in from bottom)
+        gsap.from(".gsap-hero-button", {
+            y: 50, // Start from bottom
+            opacity: 0,
+            duration: 1,
+            stagger: 0.1,
+            ease: "back.out(1.7)",
+            delay: 1
+        });
+
+        // 4. Hero Image Reveal (scale up and fade in)
+        // Removed as the foreground image div was removed
+        /*
+        gsap.from(".gsap-hero-image", {
+            scale: 0.8, // Start smaller
+            opacity: 0,
+            duration: 1.5,
+            ease: "power3.out",
+            delay: 1.2
+        });
+        */
+
+        // 5. Section Header and Paragraph (ScrollTriggered fade-in-up)
+        gsap.from(".gsap-section-header", {
+            y: 50,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: ".gsap-section-header",
+                start: "top 85%",
+                toggleActions: "play none none none",
+            }
+        });
+
+        // 6. Craft Cards (ScrollTriggered staggered fade-in-up with slight scale)
+        gsap.from(".craft-card", {
+            y: 50,
+            opacity: 0,
+            scale: 0.95, /* Re-added slight scale for animation */
+            duration: 1.5,
+            stagger: 0.25,
+            ease: "power3.out",
+            onComplete: function() {
+                // Re-enable pointer events after animation completes
+                document.querySelectorAll('.craft-card').forEach(card => {
+                    card.style.pointerEvents = 'auto';
+                });
+            },
+            scrollTrigger: {
+                trigger: ".gsap-craft-cards-container",
+                start: "top 80%",
+                toggleActions: "play none none none",
+            }
+        });
+
+        // 7. How It Works Section Header (ScrollTriggered fade-in-up)
+        gsap.from(".gsap-how-it-works-header", {
+            y: 50,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: ".gsap-how-it-works-header",
+                start: "top 85%",
+                toggleActions: "play none none none",
+            }
+        });
+
+        // 8. How It Works Cards (ScrollTriggered staggered fade-in-up with slight scale)
+        gsap.from(".how-it-works-card", {
+            y: 50,
+            opacity: 0,
+            scale: 0.95,
+            duration: 1.5,
+            stagger: 0.25,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: ".gsap-how-it-works-container",
+                start: "top 80%",
+                toggleActions: "play none none none",
+            }
+        });
+
+        // 9. New "For Artisans" Section Header (ScrollTriggered fade-in-up)
+        gsap.from(".gsap-for-artisans-header", {
+            y: 50,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: ".gsap-for-artisans-header",
+                start: "top 85%",
+                toggleActions: "play none none none",
+            }
+        });
+
+        // 10. New "For Artisans" Section Content (ScrollTriggered fade-in-up)
+        gsap.from(".gsap-for-artisans-content", {
+            y: 50,
+            opacity: 0,
+            duration: 1.5,
+            stagger: 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: ".gsap-for-artisans-content",
+                start: "top 80%",
+                toggleActions: "play none none none",
+            }
+        });
+
+        // 11. Footer Elements (ScrollTriggered fade-in-up)
+        gsap.from(".gsap-footer-element", {
+            y: 50,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: "footer", // Trigger when the footer comes into view
+                start: "top 85%",
+                toggleActions: "play none none none",
+            }
+        });
+
+        // GSAP Hover effect for craft cards
+        document.querySelectorAll('.craft-card').forEach(card => {
+            let hoverTween = gsap.to(card, {
+                y: -10, // Move up by 10px
+                boxShadow: "0 15px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.08)", // More pronounced shadow
+                duration: 0.3,
+                paused: true, // Pause it initially
+                ease: "power2.out"
+            });
+
+            card.addEventListener('mouseenter', () => hoverTween.play());
+            card.addEventListener('mouseleave', () => hoverTween.reverse());
+        });
+
+        // Redirect to user-main.html with search query when a craft card is clicked
+        document.querySelectorAll('.craft-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const craftType = card.dataset.craftType;
+                if (craftType) {
+                    window.location.href = `user-main.html?search=${encodeURIComponent(craftType)}`;
+                } else {
+                    window.location.href = 'user-main.html'; // Fallback if no specific type
+                }
+            });
+        });
+
+        // Handle hero section search input and button
+        const heroSearchInput = document.getElementById('hero-search-input');
+        const browseCraftsBtn = document.getElementById('browse-crafts-btn');
+
+        const performSearch = () => {
+            const searchTerm = heroSearchInput.value.trim();
+            if (searchTerm) {
+                window.location.href = `user-main.html?search=${encodeURIComponent(searchTerm)}`;
+            } else {
+                window.location.href = 'user-main.html';
+            }
+        };
+
+        browseCraftsBtn.addEventListener('click', performSearch);
+        heroSearchInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        console.log("GSAP animations initiated.");
+    </script>
+</body>
+</html>

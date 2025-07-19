@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CraftVietnam - Sign In</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for general text -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom right, #FAF9F7, #F6EBEE);
+            display: flex;
+            flex-direction: column; /* Stack children vertically */
+            align-items: center; /* Center items horizontally */
+            min-height: 100vh;
+            padding: 20px; /* Overall padding from screen edges */
+            box-sizing: border-box;
+        }
+        .login-card {
+            background-color: #FBFAF9;
+            border-radius: 0.75rem;
+            border: 1px solid #E7DFDA;
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            margin-bottom: 40px; /* Consistent margin to the bottom of the form box */
+        }
+        .input-field {
+            border: 1px solid #E7DFDA;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            font-size: 1rem;
+            color: #8C7B73;
+            outline: none;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .input-field::placeholder {
+            color: #8C7B73;
+        }
+        .input-field::-webkit-input-placeholder {
+            color: #8C7B73;
+        }
+        .input-field::-moz-placeholder {
+            color: #8C7B73;
+            opacity: 1;
+        }
+        .input-field:-ms-input-placeholder {
+            color: #8C7B73;
+        }
+        .input-field::placeholder {
+            color: #8C7B73;
+        }
+
+        .input-field:focus {
+            border-color: #d1c4b8;
+            box-shadow: 0 0 0 3px rgba(231, 223, 218, 0.5);
+        }
+        .gradient-text-login {
+            background: linear-gradient(to right, #FFD700, #FF8C00, #F18258);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+        .gradient-button-login {
+            background: linear-gradient(to right, #FFD700, #FF8C00, #F18258);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            width: 100%;
+            transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .gradient-button-login:hover {
+            background: linear-gradient(to right, #FFE033, #FF9933, #F59070);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+        .social-button {
+            border: 1px solid #E7DFDA;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            color: #4a5568;
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+        .social-button:hover {
+            background-color: #f0f2f5;
+            border-color: #E7DFDA;
+        }
+        .back-link-wrapper {
+            align-self: flex-start;
+            margin-bottom: 40px;
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+        .back-link-wrapper a {
+            display: flex;
+            align-items: center;
+            color: #8C7B73;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+        .back-link-wrapper a:hover {
+            color: #f97316;
+        }
+        .back-link-wrapper i {
+            margin-right: 8px;
+        }
+        .text-accent-orange {
+            color: #E75321;
+        }
+        .text-custom-grey {
+            color: #8C7B73;
+        }
+        .text-black-label {
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="back-link-wrapper">
+        <a href="landing.html">
+            <i class="fas fa-arrow-left"></i> Back to CraftVietnam
+        </a>
+    </div>
+
+    <form id="unified-login-form" class="login-card">
+        <h1 class="text-2xl font-bold mb-2 gradient-text-login">Sign In to CraftVietnam</h1>
+        <p class="mb-8 text-custom-grey">Enter your credentials to continue</p>
+
+        <!-- Message display area -->
+        <div id="message-display" class="hidden p-3 rounded-md text-center text-sm mb-4"></div>
+
+        <div class="mb-4 text-left">
+            <label for="email" class="block text-black-label text-sm font-medium mb-2">Email</label>
+            <div class="relative">
+                <input type="email" id="email" placeholder="Enter your email" class="input-field pl-10">
+                <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-custom-grey"></i>
+            </div>
+        </div>
+
+        <div class="mb-6 text-left">
+            <label for="password" class="block text-black-label text-sm font-medium mb-2">Password</label>
+            <div class="relative">
+                <input type="password" id="password" placeholder="Enter your password" class="input-field pl-10">
+                <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-custom-grey"></i>
+                <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-custom-grey hover:text-gray-600 focus:outline-none" id="toggle-password">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            <a href="#" class="text-sm text-accent-orange float-right mt-4 mb-4">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="gradient-button-login mb-6">Sign In</button>
+
+        <div class="flex items-center justify-center my-6">
+            <div class="flex-grow border-t border-gray-300"></div>
+            <span class="mx-4 text-custom-grey text-sm">OR</span>
+            <div class="flex-grow border-t border-gray-300"></div>
+        </div>
+
+        <p class="mt-8 text-sm text-custom-grey">
+            Don't have an account? <a href="signup.html" class="font-medium text-accent-orange">Register here</a>
+        </p>
+    </form>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined'
+            ? JSON.parse(__firebase_config)
+            :  {
+            apiKey: "AIzaSyD1wat0lrESovvsgy2x5Kf4M4jQsR2KHHs",
+            authDomain: "ffb-hackathon.firebaseapp.com",
+            projectId: "ffb-hackathon",
+            storageBucket: "ffb-hackathon.firebasestorage.app",
+            messagingSenderId: "411311658832",
+            appId: "1:411311658832:web:7916ad56ce15f43d263e55",
+            measurementId: "G-XMB5N1R5PG"
+        };
+
+        let app;
+        let auth;
+        let db;
+
+        window.onload = async () => {
+            
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                console.log("Firebase initialized for unified login.");
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        console.log("User is signed in:", user.uid);
+                    } else {
+                        console.log("No user is signed in.");
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error initializing Firebase:", error);
+                displayMessage("Firebase initialization failed. Please ensure your Firebase config is correct.", "error");
+            }
+
+            const unifiedLoginForm = document.getElementById('unified-login-form');
+            if (unifiedLoginForm) {
+                unifiedLoginForm.addEventListener('submit', handleUnifiedLogin);
+            }
+
+            // Toggle password visibility
+            document.getElementById('toggle-password').addEventListener('click', function() {
+                const passwordField = document.getElementById('password');
+                const icon = this.querySelector('i');
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordField.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        };
+
+        async function handleUnifiedLogin(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('message-display');
+
+            messageDiv.textContent = '';
+            messageDiv.classList.add('hidden');
+
+            if (!email || !password) {
+                displayMessage("Please enter both email and password.", "error");
+                return;
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                let redirectPage = 'user-main.html'; // Default redirect for buyers
+                let userRole = 'buyer';
+
+                // Check if user exists in 'users' collection
+                const buyerProfileRef = doc(db, `artifacts/${appId}/users/${user.uid}/profile/data`);
+                const buyerDocSnap = await getDoc(buyerProfileRef);
+
+                if (buyerDocSnap.exists()) {
+                    userRole = 'buyer';
+                    redirectPage = 'user-main.html';
+                    console.log("Logged in as Buyer:", user.uid);
+                } else {
+                    // If not a buyer, check if user exists in 'shops' collection
+                    const shopProfileRef = doc(db, `artifacts/${appId}/shop_users/${user.uid}/profile/data`);
+                    const shopDocSnap = await getDoc(shopProfileRef);
+
+                    if (shopDocSnap.exists()) {
+                        userRole = 'shop_owner';
+                        redirectPage = 'shop-main.html';
+                        console.log("Logged in as Shop Owner:", user.uid);
+                    } else {
+                        // User exists in Auth but no profile in 'users' or 'shops'
+                        console.warn("User profile not found in 'users' or 'shops' collections for UID:", user.uid);
+                        displayMessage("Login successful, but profile data missing. Please contact support.", "error");
+                        return; // Prevent redirect if profile is ambiguous
+                    }
+                }
+
+                displayMessage(`${userRole === 'buyer' ? 'Login' : 'Shop login'} successful! Redirecting...`, "success");
+                setTimeout(() => {
+                    window.location.href = redirectPage;
+                }, 1500);
+
+            } catch (error) {
+                const errorCode = error.code;
+                let errorMessage = "An unknown error occurred. Please try again.";
+
+                switch (errorCode) {
+                    case 'auth/invalid-email':
+                        errorMessage = "The email address is not valid.";
+                        break;
+                    case 'auth/user-disabled':
+                        errorMessage = "This account has been disabled.";
+                        break;
+                    case 'auth/user-not-found':
+                    case 'auth/wrong-password':
+                    case 'auth/invalid-credential':
+                        errorMessage = "Invalid email or password. Please try again.";
+                        break;
+                    case 'auth/too-many-requests':
+                        errorMessage = "Too many failed login attempts. Please try again later.";
+                        break;
+                    case 'auth/network-request-failed':
+                        errorMessage = "Network error. Please check your internet connection.";
+                        break;
+                    default:
+                        errorMessage = `Login failed: ${error.message}`;
+                        break;
+                }
+
+                console.error("Login error:", errorCode, error.message);
+                displayMessage(errorMessage, "error");
+            }
+        }
+
+        function displayMessage(message, type) {
+            const messageDiv = document.getElementById('message-display');
+            messageDiv.textContent = message;
+            messageDiv.className = `p-3 rounded-md text-center text-sm mb-4 ${type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
+            messageDiv.classList.remove('hidden');
+            setTimeout(() => {
+                messageDiv.classList.add('hidden');
+            }, 3000); // Hide message after 3 seconds
+        }
+
+
+    </script>
+</body>
+</html>

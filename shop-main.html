@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CraftVietnam - Shop Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for general text -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            /* UI Palette Colors */
+            --color-primary-orange: #f97316;
+            --color-secondary-grey: #8C7B73;
+            --color-background-light: #FBFAF9;
+            --color-border-light: #E7DFDA;
+            --color-light-orange-cream: #F6E6DF;
+            --color-dark-text: #2d3748;
+            --color-red-error: #ef4444;
+            --color-green-success: #22c56e; /* Slightly adjusted green */
+            --color-green-light: #dcfce7;
+            --color-blue-primary: #3b82f6;
+            --color-blue-light: #bfdbfe;
+            --color-darker-blue: #1d4ed8;
+            --color-yellow-pending: #d97706;
+            --color-yellow-light: #fef3c7;
+            --color-green-shipped: #059669;
+            --color-green-shipped-light: #d1fae5;
+            --color-red-cancelled: #dc2626;
+            --color-red-cancelled-light: #fee2e2;
+            --color-white: #ffffff;
+            --color-black: #000000;
+            --color-gray-100: #f3f4f6;
+            --color-gray-200: #e5e7eb;
+            --color-gray-300: #d1d5db;
+            --color-gray-500: #6b7280;
+            --color-gray-600: #4b5563;
+            --color-gray-700: #374151;
+            --color-gray-800: #1f2937;
+            --color-gray-900: #111827;
+
+            /* General button text color */
+            --button-text-color: var(--color-white);
+
+            /* Order Action Buttons - Specific Styling */
+            --order-btn-confirm-bg: var(--color-primary-orange);
+            --order-btn-confirm-hover-bg: #e06d15; /* A slightly darker orange for hover */
+
+            --order-btn-pickup-bg: var(--color-green-success); /* Keeping pickup green */
+            --order-btn-pickup-hover-bg: var(--color-green-shipped);
+
+            --order-btn-cancel-bg: transparent;
+            --order-btn-cancel-border: var(--color-primary-orange);
+            --order-btn-cancel-text: var(--color-primary-orange);
+            --order-btn-cancel-hover-bg: var(--color-light-orange-cream);
+            --order-btn-cancel-hover-border: #e06d15;
+            --order-btn-cancel-hover-text: #e06d15;
+
+            /* Pickup Confirmation Modal Buttons */
+            --modal-confirm-bg: var(--color-primary-orange);
+            --modal-confirm-hover-bg: #e06d15;
+            --modal-confirm-text: var(--color-white);
+
+            --modal-cancel-bg: transparent;
+            --modal-cancel-border: var(--color-primary-orange);
+            --modal-cancel-text: var(--color-primary-orange);
+            --modal-cancel-hover-bg: var(--color-light-orange-cream);
+            --modal-cancel-hover-border: #e06d15;
+            --modal-cancel-hover-text: #e06d15;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-background-light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Navbar styles */
+        .main-navbar {
+            background-color: var(--color-white);
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+        }
+        .main-navbar .nav-link,
+        .main-navbar .icon-btn,
+        .main-navbar .logo-text {
+            color: var(--color-dark-text);
+        }
+        .main-navbar .user-info {
+            color: var(--color-dark-text);
+        }
+        .main-navbar .settings-icon,
+        .main-navbar .logout-icon {
+            color: var(--color-secondary-grey);
+            transition: color 0.2s ease-in-out;
+        }
+        .main-navbar .settings-icon:hover,
+        .main-navbar .logout-icon:hover {
+            color: var(--color-primary-orange);
+        }
+
+        /* Shop Profile Card */
+        .shop-profile-card {
+            background-color: var(--color-white);
+            border-radius: 0.75rem;
+            border: 1px solid var(--color-border-light);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .shop-icon-circle {
+            background-color: var(--color-light-orange-cream);
+            color: var(--color-primary-orange);
+            border: 1px solid var(--color-border-light);
+        }
+        .edit-shop-button {
+            background-color: var(--color-white);
+            border: 1px solid var(--color-border-light);
+            color: var(--color-secondary-grey);
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+        .edit-shop-button:hover {
+            background-color: var(--color-light-orange-cream);
+            border-color: var(--color-primary-orange);
+            color: var(--color-primary-orange);
+        }
+
+        /* Metric Cards */
+        .metric-card {
+            background-color: var(--color-white);
+            border-radius: 0.75rem;
+            border: 1px solid var(--color-border-light);
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+            color: var(--color-dark-text);
+        }
+        .metric-card .icon {
+            color: var(--color-primary-orange);
+        }
+        .metric-card .value {
+            font-weight: 700;
+            color: var(--color-dark-text);
+        }
+        .metric-card .label {
+            color: var(--color-secondary-grey);
+        }
+
+        /* Tabs */
+        .tabs-container {
+            background-color: var(--color-white);
+            border-radius: 0.75rem;
+            border: 1px solid var(--color-border-light);
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+        }
+        .tab-button {
+            color: var(--color-secondary-grey);
+            font-weight: 500;
+            transition: color 0.2s ease-in-out;
+            position: relative;
+        }
+        .tab-button:hover {
+            color: var(--color-primary-orange);
+        }
+        .tab-button.active {
+            color: var(--color-primary-orange);
+            font-weight: 600;
+        }
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--color-primary-orange);
+            border-radius: 1px;
+        }
+
+        /* Product Table */
+        .product-table-card {
+            background-color: var(--color-white);
+            border-radius: 0.75rem;
+            border: 1px solid var(--color-border-light);
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.05);
+        }
+        .add-product-button {
+            background: linear-gradient(to right, #FFD700, #FF8C00, #F18258);
+            color: var(--color-white);
+            transition: background 0.3s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .add-product-button:hover {
+            background: linear-gradient(to right, #F18258, #FF8C00, #FFD700);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+        }
+        .table-header {
+            color: var(--color-secondary-grey);
+            font-weight: 500;
+        }
+        .table-row {
+            border-top: 1px solid var(--color-border-light);
+        }
+        .product-status-active {
+            background-color: var(--color-green-light);
+            color: var(--color-green-success);
+            border-radius: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .action-icon {
+            color: var(--color-secondary-grey);
+            transition: color 0.2s ease-in-out;
+        }
+        .action-icon:hover {
+            color: var(--color-primary-orange);
+        }
+        .action-icon.delete:hover {
+            color: var(--color-red-error);
+        }
+
+        /* Order Card Styles */
+        .order-card {
+            background-color: var(--color-white);
+            border-radius: 0.75rem;
+            border: 1px solid var(--color-border-light);
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            min-width: 0;
+        }
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .order-item-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 0.375rem;
+            border: 1px solid var(--color-border-light);
+        }
+        .status-badge {
+            padding: 0.3rem 0.7rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: capitalize;
+        }
+        .status-pending { background-color: var(--color-yellow-light); color: var(--color-yellow-pending); }
+        .status-processing { background-color: var(--color-blue-light); color: var(--color-blue-primary); }
+        .status-shipped { background-color: var(--color-green-shipped-light); color: var(--color-green-shipped); }
+        .status-delivered { background-color: var(--color-blue-light); color: var(--color-darker-blue); }
+        .status-cancelled { background-color: var(--color-red-cancelled-light); color: var(--color-red-cancelled); }
+
+        /* Order Action Buttons */
+        .btn-confirm-order {
+            background-color: var(--order-btn-confirm-bg);
+            color: var(--button-text-color);
+            transition: background-color 0.2s ease-in-out;
+        }
+        .btn-confirm-order:hover {
+            background-color: var(--order-btn-confirm-hover-bg);
+        }
+
+        .btn-confirm-pickup {
+            background-color: var(--order-btn-pickup-bg);
+            color: var(--button-text-color);
+            transition: background-color 0.2s ease-in-out;
+        }
+        .btn-confirm-pickup:hover {
+            background-color: var(--order-btn-pickup-hover-bg);
+        }
+
+        .btn-cancel-order {
+            background-color: var(--order-btn-cancel-bg);
+            border: 1px solid var(--order-btn-cancel-border); /* Added border for hollow effect */
+            color: var(--order-btn-cancel-text);
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+        .btn-cancel-order:hover {
+            background-color: var(--order-btn-cancel-hover-bg);
+            border-color: var(--order-btn-cancel-hover-border);
+            color: var(--order-btn-cancel-hover-text);
+        }
+
+        /* Message Box Styles */
+        #message-box {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease-in-out;
+        }
+        #message-box.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+        #message-box > div {
+            background-color: var(--color-white);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            max-width: 24rem;
+            width: 90%;
+            text-align: center;
+        }
+
+        /* Pickup Confirmation Modal Styles */
+        #pickup-confirmation-modal {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1002;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease-in-out;
+        }
+        #pickup-confirmation-modal.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+        #pickup-confirmation-modal > div {
+            background-color: var(--color-white);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            max-width: 28rem;
+            width: 90%;
+            text-align: center;
+        }
+
+        /* Pickup Modal Buttons */
+        #confirm-pickup-btn {
+            background-color: var(--modal-confirm-bg);
+            color: var(--modal-confirm-text);
+            transition: background-color 0.2s ease-in-out;
+        }
+        #confirm-pickup-btn:hover {
+            background-color: var(--modal-confirm-hover-bg);
+        }
+
+        #cancel-pickup-btn {
+            background-color: var(--modal-cancel-bg);
+            border: 1px solid var(--modal-cancel-border);
+            color: var(--modal-cancel-text);
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+        #cancel-pickup-btn:hover {
+            background-color: var(--modal-cancel-hover-bg);
+            border-color: var(--modal-cancel-hover-border);
+            color: var(--modal-cancel-hover-text);
+        }
+
+        /* Orders List Container - Explicit Grid Definition */
+        #orders-list-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            #orders-list-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section - Navbar -->
+    <header class="main-navbar fixed top-0 left-0 right-0 z-50 py-3 px-6 md:px-10 flex items-center justify-between">
+        <div class="flex items-center space-x-8">
+            <div class="text-lg font-bold logo-text">CraftVietnam</div>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span class="user-info text-sm font-medium">Welcome back, Mai</span>
+            <button class="icon-btn p-1.5 rounded-full hover:bg-gray-100">
+                <i class="fas fa-cog settings-icon"></i>
+            </button>
+            <button class="icon-btn p-1.5 rounded-full hover:bg-gray-100" id="logout-btn">
+                <i class="fas fa-sign-out-alt logout-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow pt-24 pb-12 px-6 md:px-10">
+        <div class="container mx-auto">
+            <!-- Shop Profile Section -->
+            <section class="shop-profile-card p-6 mb-8 flex flex-col md:flex-row items-start md:items-center justify-between">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="shop-icon-circle w-16 h-16 flex items-center justify-center rounded-full text-3xl mr-4">
+                        <i class="fas fa-store"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900 mb-1">Heritage Crafts by Mai</h1>
+                        <p class="text-sm text-gray-600 mb-1"><i class="fas fa-map-marker-alt mr-1"></i>Hanoi, Vietnam</p>
+                        <p class="text-sm text-gray-500">Traditional Vietnamese handicrafts passed down through generations</p>
+                    </div>
+                </div>
+                <button class="edit-shop-button px-6 py-2 rounded-full font-semibold text-sm">
+                    <i class="fas fa-edit mr-2"></i>Edit Shop
+                </button>
+            </section>
+
+            <!-- Key Metrics Section -->
+            <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="metric-card p-6 text-center">
+                    <div class="text-3xl mb-2 icon"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="text-3xl value">$<span id="monthly-revenue">0.00</span></div>
+                    <div class="text-sm label">Monthly Revenue</div>
+                </div>
+                <div class="metric-card p-6 text-center">
+                    <div class="text-3xl mb-2 icon"><i class="fas fa-box-open"></i></div>
+                    <div class="text-3xl value" id="total-products">0</div>
+                    <div class="text-sm label">Total Products</div>
+                </div>
+                <div class="metric-card p-6 text-center">
+                    <div class="text-3xl mb-2 icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="text-3xl value" id="total-sales">0</div>
+                    <div class="text-sm label">Total Sales</div>
+                </div>
+                <div class="metric-card p-6 text-center">
+                    <div class="text-3xl mb-2 icon"><i class="fas fa-star"></i></div>
+                    <div class="text-3xl value" id="average-rating">0.0</div>
+                    <div class="text-sm label">Average Rating</div>
+                </div>
+            </section>
+
+            <!-- Tabs Section -->
+            <section class="tabs-container p-4 mb-8">
+                <div class="flex space-x-8 border-b border-gray-200">
+                    <button class="tab-button active pb-3 px-2" data-tab="products">Products</button>
+                    <button class="tab-button pb-3 px-2" data-tab="orders">Orders</button>
+                    <button class="tab-button pb-3 px-2" data-tab="reviews">Reviews</button>
+                    <button class="tab-button pb-3 px-2" data-tab="analytics">Analytics</button>
+                </div>
+            </section>
+
+            <!-- Tab Content: My Products Section -->
+            <section id="products-tab-content" class="product-table-card p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">My Products</h2>
+                    <button class="add-product-button px-6 py-3 rounded-md font-semibold text-sm">
+                        <i class="fas fa-plus mr-2"></i>Add New Product
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs table-header uppercase tracking-wider">Product</th>
+                                <th class="px-6 py-3 text-left text-xs table-header uppercase tracking-wider">Price</th>
+                                <th class="px-6 py-3 text-left text-xs table-header uppercase tracking-wider">Stock</th>
+                                <th class="px-6 py-3 text-left text-xs table-header uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs table-header uppercase tracking-wider">Views</th>
+                                <th class="px-6 py-3 text-left text-xs table-header uppercase tracking-wider">Sales</th>
+                                <th class="px-6 py-3 text-left text-xs table-header uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="products-table-body">
+                            <!-- Product Rows will be loaded here dynamically -->
+                            <tr><td colspan="7" class="px-6 py-4 text-center text-gray-500">Loading products...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Tab Content: Orders Section -->
+            <section id="orders-tab-content" class="product-table-card p-6 hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-900">Customer Orders</h2>
+                </div>
+                <div id="orders-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Orders will be loaded here dynamically -->
+                    <p id="no-orders-message" class="col-span-full text-center text-gray-500 hidden">No orders found for your shop.</p>
+                </div>
+            </section>
+
+            <!-- Other Tab Contents (Reviews, Analytics) can be added here, initially hidden -->
+            <section id="reviews-tab-content" class="product-table-card p-6 hidden">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Customer Reviews</h2>
+                <p class="text-gray-500">Reviews content will be displayed here.</p>
+            </section>
+
+            <section id="analytics-tab-content" class="product-table-card p-6 hidden">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Shop Analytics</h2>
+                <p class="text-gray-500">Analytics charts and data will be displayed here.</p>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Message Box HTML -->
+    <div id="message-box" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1001] hidden">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center">
+            <p id="message-box-text" class="text-lg font-semibold mb-4"></p>
+            <button id="message-box-close" class="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition-colors">OK</button>
+        </div>
+    </div>
+
+    <!-- Pickup Confirmation Modal HTML -->
+    <div id="pickup-confirmation-modal" class="hidden">
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Confirm Pickup</h3>
+            <p class="text-gray-700 mb-6">Are you sure the order is ready for pickup?</p>
+            <div class="flex justify-center space-x-4">
+                <button id="confirm-pickup-btn" class="px-5 py-2 rounded-md font-medium transition-colors">Confirm</button>
+                <button id="cancel-pickup-btn" class="px-5 py-2 rounded-md font-medium transition-colors">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, doc, getDoc, collection, query, where, onSnapshot, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global variables provided by the environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = {
+            apiKey: "AIzaSyD1wat0lrESovvsgy2x5Kf4M4jQsR2KHHs",
+            authDomain: "ffb-hackathon.firebaseapp.com",
+            projectId: "ffb-hackathon",
+            storageBucket: "ffb-hackathon.firebasestorage.app",
+            messagingSenderId: "411311658832",
+            appId: "1:411311658832:web:7916ad56ce15f43d263e55",
+            measurementId: "G-XMB5N1R5PG"
+        };
+
+        let app;
+        let auth;
+        let db;
+        let currentShopUserId = null; // To store the logged-in shop owner's UID
+        let currentShopId = null; // To store the shopId, which will now be the UID
+
+        window.onload = async () => {
+            try {
+                app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        const shopProfileRef = doc(db, `artifacts/${appId}/shop_users/${user.uid}/profile/data`);
+                        const shopProfileSnap = await getDoc(shopProfileRef);
+
+                        if (shopProfileSnap.exists() && shopProfileSnap.data().role === 'shop_owner') {
+                            currentShopUserId = user.uid;
+                            currentShopId = user.uid; // Set currentShopId directly to the user's UID
+                            const shopData = shopProfileSnap.data();
+                            console.log("Shop owner signed in:", user.uid, "Shop ID:", currentShopId);
+                            updateShopOwnerUI(shopData);
+                            fetchShopProducts(currentShopUserId); // Fetch products for this shop owner
+                            fetchShopOrders(); // Fetch orders for this shop owner
+                            fetchShopMetrics(currentShopUserId); // Fetch and display shop metrics
+                        } else {
+                            console.log("User is not a shop owner or profile not found. Redirecting to main marketplace.");
+                            window.location.href = 'user-main.html'; // Redirect non-shop owners
+                        }
+                    } else {
+                        console.log("No user is signed in. Redirecting to login.");
+                        window.location.href = 'login.html'; // Redirect if not logged in
+                    }
+                });
+
+            } catch (error) {
+                console.error("Error initializing Firebase or authenticating:", error);
+                displayMessage("Failed to initialize application. Please try again later.", "error");
+            }
+
+            // Logout functionality
+            document.getElementById('logout-btn').addEventListener('click', async () => {
+                try {
+                    await signOut(auth);
+                    console.log("Shop owner signed out successfully.");
+                    window.location.href = 'login.html'; // Redirect to login page
+                } catch (error) {
+                    console.error("Error signing out:", error);
+                    displayMessage("Error signing out. Please try again.", "error");
+                }
+            });
+
+            // Tab switching logic
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    // Remove active class from all buttons
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    event.target.classList.add('active');
+
+                    // Hide all tab contents
+                    document.getElementById('products-tab-content').classList.add('hidden');
+                    document.getElementById('orders-tab-content').classList.add('hidden');
+                    document.getElementById('reviews-tab-content').classList.add('hidden');
+                    document.getElementById('analytics-tab-content').classList.add('hidden');
+
+                    // Show the selected tab content
+                    const targetTab = event.target.dataset.tab;
+                    document.getElementById(`${targetTab}-tab-content`).classList.remove('hidden');
+                });
+            });
+        };
+
+        /**
+         * Updates the shop owner's UI elements with provided shop data.
+         * @param {object} shopData - The data object for the current shop.
+         */
+        function updateShopOwnerUI(shopData) {
+            document.querySelector('.user-info').textContent = `Welcome back, ${shopData.name || shopData.shopName || 'Shop Owner'}`;
+            document.querySelector('.shop-profile-card h1').textContent = shopData.shopName || 'Your Shop Name';
+            document.querySelector('.shop-profile-card .text-gray-600').textContent = `📍 ${shopData.address || 'Location, Vietnam'}`;
+            document.querySelector('.shop-profile-card .text-gray-500').textContent = shopData.description || 'Traditional Vietnamese handicrafts passed down through generations';
+        }
+
+        /**
+         * Fetches and displays the current shop's products.
+         * It also updates the total products metric.
+         * @param {string} shopId - The ID of the current shop.
+         */
+        function fetchShopProducts(shopId) {
+            const productsTableBody = document.getElementById('products-table-body');
+            productsTableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-4 text-center text-gray-500">Loading products...</td></tr>`;
+
+            const productsCollectionRef = collection(db, `artifacts/${appId}/public/data/items`);
+            const q = query(productsCollectionRef, where("shopId", "==", shopId));
+
+            onSnapshot(q, (snapshot) => {
+                productsTableBody.innerHTML = '';
+                let totalProducts = 0;
+
+                if (snapshot.empty) {
+                    productsTableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-4 text-center text-gray-500">No products found for your shop.</td></tr>`;
+                } else {
+                    snapshot.forEach((doc) => {
+                        const product = { id: doc.id, ...doc.data() };
+                        totalProducts++;
+
+                        const row = `
+                            <tr class="table-row">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <img src="${product.imageUrl || 'https://placehold.co/40x40/CCCCCC/000000?text=No+Image'}" alt="${product.itemName}" class="w-10 h-10 rounded-md object-cover mr-3">
+                                        <div>
+                                            <div class="text-sm font-medium text-gray-900">${product.itemName}</div>
+                                            <div class="text-xs text-gray-500">${product.category || 'N/A'}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$${product.price ? product.price.toFixed(2) : '0.00'}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.stock || 0}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="product-status-active">${product.status || 'Active'}</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.views || 0}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${product.sales || 0}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button class="action-icon text-lg mr-3 edit-product-btn" data-product-id="${product.id}"><i class="fas fa-edit"></i></button>
+                                    <button class="action-icon delete text-lg delete-product-btn" data-product-id="${product.id}"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        `;
+                        productsTableBody.insertAdjacentHTML('beforeend', row);
+                    });
+
+                    // Update total products metric
+                    document.getElementById('total-products').textContent = totalProducts;
+                }
+
+                // Add event listeners for edit/delete buttons (future functionality)
+                productsTableBody.querySelectorAll('.edit-product-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const productId = event.currentTarget.dataset.productId;
+                        console.log('Edit product:', productId);
+                        displayMessage(`Edit functionality for product ID: ${productId} will be implemented here.`, "info");
+                    });
+                });
+
+                productsTableBody.querySelectorAll('.delete-product-btn').forEach(button => {
+                    button.addEventListener('click', (event) => {
+                        const productId = event.currentTarget.dataset.productId;
+                        console.log('Delete product:', productId);
+                        displayMessage(`Delete functionality for product ID: ${productId} will be implemented here.`, "info");
+                    });
+                });
+
+            }, (error) => {
+                console.error("Error fetching shop products:", error);
+                productsTableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-4 text-center text-red-500">Failed to load products.</td></tr>`;
+            });
+        }
+
+        /**
+         * Fetches and displays the current shop's orders.
+         */
+        function fetchShopOrders() {
+            if (!currentShopId) {
+                console.warn("Cannot fetch orders: currentShopId is not set.");
+                return;
+            }
+
+            const ordersCollectionRef = collection(db, `artifacts/${appId}/public/data/orders`);
+            const ordersListContainer = document.getElementById('orders-list-container');
+            const noOrdersMessage = document.getElementById('no-orders-message');
+
+            ordersListContainer.innerHTML = ''; // Clear existing orders
+            noOrdersMessage.classList.add('hidden'); // Hide message initially
+
+            onSnapshot(ordersCollectionRef, (snapshot) => {
+                let shopOrders = [];
+                snapshot.forEach((doc) => {
+                    const order = { id: doc.id, ...doc.data() };
+                    // Filter orders that contain at least one item from the current shop
+                    const containsShopItem = order.items.some(item => item.shopId === currentShopId);
+                    if (containsShopItem) {
+                        shopOrders.push(order);
+                    }
+                });
+
+                renderOrders(shopOrders);
+
+                if (shopOrders.length === 0) {
+                    noOrdersMessage.classList.remove('hidden');
+                } else {
+                    noOrdersMessage.classList.add('hidden');
+                }
+            }, (error) => {
+                console.error("Error listening to orders:", error);
+                displayMessage("Failed to load orders. Please try again.", "error");
+                noOrdersMessage.classList.remove('hidden');
+                noOrdersMessage.textContent = "Failed to load orders. Please try again later.";
+            });
+        }
+
+        /**
+         * Renders the given list of orders into the UI.
+         * @param {Array<object>} orders - An array of order objects to render.
+         */
+        function renderOrders(orders) {
+            const ordersListContainer = document.getElementById('orders-list-container');
+            ordersListContainer.innerHTML = ''; // Clear existing orders
+
+            if (orders.length === 0) {
+                return; // Message handled by fetchShopOrders
+            }
+
+            orders.forEach(order => {
+                // Filter items to show only those belonging to the current shop
+                const shopSpecificItems = order.items.filter(item => item.shopId === currentShopId);
+
+                const orderDate = new Date(order.orderDate).toLocaleDateString('en-US', {
+                    year: 'numeric', month: 'long', day: 'numeric'
+                });
+
+                let itemsHtml = shopSpecificItems.map(item => `
+                    <div class="flex items-center space-x-3 mb-2">
+                        <img src="${item.imageUrl || 'https://placehold.co/60x60/CCCCCC/000000?text=No+Image'}" alt="${item.itemName}" class="order-item-image">
+                        <div>
+                            <p class="font-medium text-gray-800">${item.itemName}</p>
+                            <p class="text-sm text-gray-600">Qty: ${item.quantity} | Price: $${item.price.toFixed(2)}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                const orderCard = `
+                    <div class="order-card" data-order-id="${order.id}">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-900">Order #${order.orderId.substring(0, 8)}</h3>
+                            <span class="status-badge status-${order.status}">${order.status}</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2"><strong>Buyer:</strong> ${order.buyerName}</p>
+                        <p class="text-sm text-gray-600 mb-2"><strong>Date:</strong> ${orderDate}</p>
+                        <p class="text-sm text-gray-600 mb-2"><strong>Total:</strong> <span class="font-bold text-orange-600">$${order.totalPrice.toFixed(2)}</span></p>
+                        <p class="text-sm text-gray-600 mb-2"><strong>Shipping Address:</strong> ${order.shippingAddress}</p>
+                        <p class="text-sm text-gray-600 mb-4"><strong>Contact:</strong> ${order.buyerPhoneNumber} (${order.paymentMethod})</p>
+
+                        <div class="mb-4">
+                            <h4 class="font-medium text-gray-700 mb-2">Items from your shop:</h4>
+                            ${itemsHtml}
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row items-center justify-between mt-4 border-t pt-4 border-gray-200 space-y-2 sm:space-y-0 sm:space-x-2">
+                            <button class="px-4 py-2 rounded-md font-medium w-full sm:w-auto btn-confirm-order ${order.status === 'pending' ? '' : 'hidden'}" onclick="handleOrderAction('${order.id}', 'process')">Confirm Order</button>
+                            <button class="px-4 py-2 rounded-md font-medium w-full sm:w-auto btn-confirm-pickup ${order.status === 'processing' ? '' : 'hidden'}" onclick="handleOrderAction('${order.id}', 'pickup')">Confirm Pickup</button>
+                            <button class="px-4 py-2 rounded-md font-medium w-full sm:w-auto btn-cancel-order ${order.status === 'pending' || order.status === 'processing' ? '' : 'hidden'}" onclick="handleOrderAction('${order.id}', 'cancel')">Cancel Order</button>
+                        </div>
+                    </div>
+                `;
+                ordersListContainer.insertAdjacentHTML('beforeend', orderCard);
+            });
+        }
+
+        /**
+         * Fetches and displays the shop's key metrics (monthly revenue, total sales, average rating).
+         * This function sets up a real-time listener for the metrics document.
+         * @param {string} shopId - The ID of the current shop.
+         */
+        async function fetchShopMetrics(shopId) {
+            const metricsRef = doc(db, `artifacts/${appId}/shop_users/${shopId}/metrics/data`);
+
+            onSnapshot(metricsRef, (docSnap) => {
+                let monthlyRevenue = 0;
+                let totalSales = 0;
+                let averageRating = 0;
+
+                if (docSnap.exists()) {
+                    const metrics = docSnap.data();
+                    monthlyRevenue = metrics.monthlyRevenue || 0;
+                    totalSales = metrics.totalSales || 0;
+                    averageRating = metrics.averageRating || 0;
+                } else {
+                    // If metrics document doesn't exist, create it with initial values
+                    setDoc(metricsRef, {
+                        monthlyRevenue: 0,
+                        totalSales: 0,
+                        averageRating: 0
+                    }, { merge: true }).catch(e => console.error("Error creating metrics doc:", e));
+                }
+
+                document.getElementById('monthly-revenue').textContent = monthlyRevenue.toFixed(2);
+                document.getElementById('total-sales').textContent = totalSales;
+                document.getElementById('average-rating').textContent = averageRating.toFixed(1);
+            }, (error) => {
+                console.error("Error fetching shop metrics:", error);
+                displayMessage("Failed to load shop metrics.", "error");
+            });
+        }
+
+        // Central handler for order actions
+        window.handleOrderAction = async (orderId, actionType) => {
+            switch (actionType) {
+                case 'process':
+                    await updateOrderStatus(orderId, 'processing');
+                    displayMessage(`Order #${orderId.substring(0, 8)} status updated to Processing.`, "success");
+                    break;
+                case 'pickup':
+                    showPickupConfirmation(orderId);
+                    break;
+                case 'cancel':
+                    await updateOrderStatus(orderId, 'cancelled');
+                    displayMessage(`Order #${orderId.substring(0, 8)} has been Cancelled.`, "success");
+                    break;
+                default:
+                    console.warn("Unknown order action:", actionType);
+            }
+        };
+
+        // Function to show pickup confirmation modal
+        function showPickupConfirmation(orderId) {
+            const modal = document.getElementById('pickup-confirmation-modal');
+            const confirmBtn = document.getElementById('confirm-pickup-btn');
+            const cancelBtn = document.getElementById('cancel-pickup-btn');
+
+            modal.classList.remove('hidden');
+            modal.classList.add('visible');
+
+            // Clear previous event listeners to prevent multiple triggers
+            const newConfirmBtn = confirmBtn.cloneNode(true);
+            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+            const newCancelBtn = cancelBtn.cloneNode(true);
+            cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+
+            document.getElementById('confirm-pickup-btn').addEventListener('click', async () => {
+                modal.classList.remove('visible');
+                modal.classList.add('hidden');
+                displayMessage(`Order #${orderId.substring(0, 8)} pickup confirmed. Preparing for shipment...`, "info");
+
+                // Set status to shipped after 5 seconds
+                setTimeout(async () => {
+                    await updateOrderStatus(orderId, 'shipped');
+                    displayMessage(`Order #${orderId.substring(0, 8)} status updated to Shipped.`, "success");
+
+                    // Set status to delivered after another 5 seconds
+                    setTimeout(async () => {
+                        await updateOrderStatus(orderId, 'delivered');
+                        displayMessage(`Order #${orderId.substring(0, 8)} status updated to Delivered.`, "success");
+                    }, 5000); // 5-second delay for delivered
+                }, 5000); // 5-second delay for shipped
+            });
+
+            document.getElementById('cancel-pickup-btn').addEventListener('click', () => {
+                modal.classList.remove('visible');
+                modal.classList.add('hidden');
+                displayMessage("Pickup confirmation cancelled.", "info");
+            });
+        }
+
+        /**
+         * Updates the status of an order in Firestore and updates shop metrics.
+         * @param {string} orderId - The ID of the order to update.
+         * @param {string} newStatus - The new status to set for the order.
+         */
+        async function updateOrderStatus(orderId, newStatus) {
+            try {
+                const orderRef = doc(db, `artifacts/${appId}/public/data/orders`, orderId);
+                const orderSnap = await getDoc(orderRef);
+
+                if (!orderSnap.exists()) {
+                    console.error("Order not found:", orderId);
+                    displayMessage("Order not found.", "error");
+                    return;
+                }
+
+                const orderData = orderSnap.data();
+                const oldStatus = orderData.status;
+                const orderTotalPrice = orderData.totalPrice || 0;
+                const paymentMethod = orderData.paymentMethod;
+
+                // Update order status
+                await updateDoc(orderRef, {
+                    status: newStatus
+                });
+                console.log(`Order ${orderId} status updated to: ${newStatus}`);
+
+                // Update shop metrics based on status change
+                const metricsRef = doc(db, `artifacts/${appId}/shop_users/${currentShopId}/metrics/data`);
+                const metricsSnap = await getDoc(metricsRef);
+                let currentMetrics = metricsSnap.exists() ? metricsSnap.data() : { monthlyRevenue: 0, totalSales: 0, averageRating: 0 };
+
+                // Logic for Total Sales: Increment when order moves from pending to processing
+                if (oldStatus === 'pending' && newStatus === 'processing') {
+                    currentMetrics.totalSales = (currentMetrics.totalSales || 0) + orderTotalPrice;
+                }
+
+                // Logic for Monthly Revenue based on payment method
+                if (paymentMethod === 'COD') {
+                    if (newStatus === 'delivered') {
+                        currentMetrics.monthlyRevenue = (currentMetrics.monthlyRevenue || 0) + orderTotalPrice;
+                    }
+                } else { // Non-COD payment methods (e.g., Credit Card, PayPal)
+                    if (oldStatus === 'pending' && newStatus === 'processing') { // Revenue added upon confirmation
+                        currentMetrics.monthlyRevenue = (currentMetrics.monthlyRevenue || 0) + orderTotalPrice;
+                    }
+                }
+
+                await setDoc(metricsRef, currentMetrics, { merge: true });
+                console.log("Shop metrics updated:", currentMetrics);
+
+                // The displayMessage is handled by the calling function now for more specific messages
+            } catch (error) {
+                console.error("Error updating order status or metrics:", error);
+                displayMessage("Failed to update order status or metrics. Please try again.", "error");
+            }
+        }
+
+        /**
+         * Displays a message in a modal box.
+         * @param {string} message - The message to display.
+         * @param {string} type - The type of message ('success', 'error', 'info').
+         */
+        function displayMessage(message, type) {
+            const messageBox = document.getElementById('message-box');
+            const messageBoxText = document.getElementById('message-box-text');
+            const messageBoxCloseBtn = document.getElementById('message-box-close');
+
+            if (!messageBox || !messageBoxText || !messageBoxCloseBtn) {
+                console.error("Message box elements not found!");
+                return;
+            }
+
+            messageBoxText.textContent = message;
+            messageBoxText.className = `text-lg font-semibold mb-4 ${type === 'success' ? 'text-green-700' : (type === 'error' ? 'text-red-700' : 'text-blue-700')}`;
+            messageBox.classList.add('visible');
+
+            const oldCloseBtn = messageBoxCloseBtn.cloneNode(true);
+            messageBoxCloseBtn.parentNode.replaceChild(oldCloseBtn, messageBoxCloseBtn);
+
+            document.getElementById('message-box-close').addEventListener('click', () => {
+                messageBox.classList.remove('visible');
+            });
+        }
+    </script>
+</body>
+</html>
