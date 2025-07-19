@@ -712,7 +712,7 @@
 
         // Event listener for "Browse Crafts" button
         document.getElementById('browse-crafts-btn').addEventListener('click', () => {
-            window.location.href = 'main-page.html';
+            window.location.href = 'user-main.html';
         });
 
         // Event listener for hero search input (redirects to main-page with search query)
@@ -720,7 +720,7 @@
             if (event.key === 'Enter') {
                 const searchQuery = event.target.value;
                 if (searchQuery) {
-                    window.location.href = `main-page.html?search=${encodeURIComponent(searchQuery)}`;
+                    window.location.href = `user-main.html?search=${encodeURIComponent(searchQuery)}`;
                 }
             }
         });
@@ -731,7 +731,7 @@
                 event.preventDefault(); // Prevent default link behavior
                 const craftType = event.target.closest('.craft-card').dataset.craftType;
                 if (craftType) {
-                    window.location.href = `main-page.html?sort=${encodeURIComponent(craftType)}`;
+                    window.location.href = `user-main.html?sort=${encodeURIComponent(craftType)}`;
                 }
             });
         });
