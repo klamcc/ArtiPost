@@ -84,7 +84,7 @@
             box-shadow: none; /* Removed shadow as per image */
         }
         .search-input {
-            border: 1px solid #E7DFDA; /* Lighter border */
+            border: 1px solid #E7DFDA;
             border-radius: 0.5rem;
             padding: 0.75rem 1rem 0.75rem 2.5rem; /* Left padding for icon */
             width: 100%;
@@ -1000,9 +1000,6 @@
                             if (!currentUserProfile.phoneNumbers) {
                                 currentUserProfile.phoneNumbers = [];
                             }
-                            fetchFeaturedProducts(); // Fetch products for buyer view
-                            loadCartFromLocalStorage(); // Load cart for buyer
-                            // No explicit redirection needed as they are already on user-main.html
                         } else {
                             // Check if the user is a shop owner
                             const shopProfileRef = doc(db, `artifacts/${appId}/shop_users/${user.uid}/profile/data`);
@@ -1011,29 +1008,99 @@
                             if (shopDocSnap.exists()) {
                                 console.log("User is a Shop Owner. Redirecting to shop-main.html.");
                                 window.location.href = 'shop-main.html'; // Redirect to shop owner dashboard
+                                return; // Important: exit function after redirect
                             } else {
-                                // User is authenticated but their profile is not found in either collection
+                                // Authenticated user, but no buyer or shop owner profile found.
+                                // This scenario might occur if a user logs in but hasn't completed profile setup.
+                                // For now, we'll allow them to browse but won't set currentUserId for profile-dependent features.
                                 console.warn("Authenticated user profile not found in 'users' or 'shop_users' collections for UID:", user.uid);
-                                // Redirect to login as a default fallback if role is undefined
-                                console.log("Redirecting to login as user role is undefined.");
-                                window.location.href = 'login.html';
+                                currentUserId = null; // Reset currentUserId if no valid profile found
                             }
                         }
                     } else {
-                        console.log("No user is signed in. Redirecting to login.");
-                        window.location.href = 'login.html'; // Redirect if not logged in
+                        console.log("No user is signed in. Allowing browsing.");
+                        currentUserId = null; // Ensure currentUserId is null if no user
                     }
+
+                    // These functions should always run, regardless of login status,
+                    // to display products and load local cart data.
+                    fetchFeaturedProducts();
+                    loadCartFromLocalStorage();
+
+                    // --- Parse URL parameters on load (moved here to ensure currentUserId is set if logged in) ---
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const searchQueryParam = urlParams.get('search');
+                    const sortQueryParam = urlParams.get('sort'); // This is used for category filtering from landing page
+
+                    if (searchQueryParam) {
+                        currentSearchQuery = searchQueryParam.toLowerCase();
+                        const searchInput = document.getElementById('search-input');
+                        if (searchInput) {
+                            searchInput.value = searchQueryParam;
+                        }
+                    }
+
+                    if (sortQueryParam) {
+                        currentCategoryFilter = sortQueryParam;
+                        // Update the category dropdown UI
+                        const categoryDropdown = document.getElementById('category-dropdown');
+                        if (categoryDropdown) {
+                            const selectedValueSpan = categoryDropdown.querySelector('.selected-value span');
+                            const options = categoryDropdown.querySelectorAll('.dropdown-option');
+
+                            // Remove 'selected' class and checkmark from all options
+                            options.forEach(opt => {
+                                opt.classList.remove('selected');
+                                const checkmark = opt.querySelector('.checkmark');
+                                if (checkmark) checkmark.remove();
+                            });
+
+                            // Find and select the matching option
+                            let found = false;
+                            options.forEach(opt => {
+                                if (opt.dataset.value === sortQueryParam) {
+                                    opt.classList.add('selected');
+                                    const checkmarkIcon = document.createElement('i');
+                                    checkmarkIcon.classList.add('fas', 'fa-check', 'checkmark');
+                                    opt.appendChild(checkmarkIcon);
+                                    selectedValueSpan.textContent = opt.textContent.replace('✓', '').trim();
+                                    selectedValueSpan.dataset.value = sortQueryParam;
+                                    found = true;
+                                }
+                            });
+                            // If the sort parameter doesn't match any specific category, default to "All Categories"
+                            if (!found) {
+                                currentCategoryFilter = ''; // Reset filter
+                                const allCategoriesOption = categoryDropdown.querySelector('.dropdown-option[data-value=""]');
+                                if (allCategoriesOption) {
+                                    allCategoriesOption.classList.add('selected');
+                                    const checkmarkIcon = document.createElement('i');
+                                    checkmarkIcon.classList.add('fas', 'fa-check', 'checkmark');
+                                    allCategoriesOption.appendChild(checkmarkIcon);
+                                    selectedValueSpan.textContent = allCategoriesOption.textContent.replace('✓', '').trim();
+                                    selectedValueSpan.dataset.value = '';
+                                }
+                            }
+                        }
+                    }
+                    // --- END URL Parameter Parsing ---
                 });
 
             } catch (error) {
-                console.error("Error initializing Firebase or authenticating:", error);
+                console.error("Error initializing Firebase:", error);
                 // Display a message to the user or log the error more prominently
             }
 
             // Logout functionality (triggered by clicking the user icon)
             document.getElementById('user-profile-btn').addEventListener('click', () => {
                 const logoutBtn = document.getElementById('logout-btn');
-                logoutBtn.classList.toggle('hidden'); // Toggle visibility of logout button
+                // Only show logout button if a user is actually logged in
+                if (auth.currentUser) {
+                    logoutBtn.classList.toggle('hidden');
+                } else {
+                    // If not logged in, clicking the user icon could redirect to login
+                    window.location.href = 'login.html';
+                }
             });
 
             document.getElementById('logout-btn').addEventListener('click', async () => {
@@ -1481,7 +1548,9 @@
                 return;
             }
             if (!currentUserId) {
-                displayMessage("You must be logged in to proceed.", "error");
+                displayMessage("You must be logged in to proceed with checkout.", "error");
+                // Optionally, redirect to login page here if you want to force login for checkout
+                // window.location.href = 'login.html';
                 return;
             }
 
