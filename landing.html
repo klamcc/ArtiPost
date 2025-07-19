@@ -21,7 +21,7 @@
         }
         .hero-background {
             /* Updated to use "bg.png" as the background image */
-            background-image: url('https://placehold.co/1920x1080/000000/FFFFFF?text=Background+Image'); /* Placeholder for bg.png */
+            background-image: url('pottery.png'); /* Placeholder for bg.png */
             background-size: cover;
             background-position: center;
             position: relative; /* Ensure main is relative for absolute positioning of children */
@@ -99,7 +99,7 @@
         }
 
         /* Craft Card Hover Effect */
-        .craft-card {   
+        .craft-card {  
             pointer-events: none; /* Disable pointer events initially */
             position: relative; /* Ensure z-index works for hover effect */
             z-index: 1; /* Default z-index */
@@ -293,64 +293,64 @@
             </p>
         </div>
 
-        <!-- Responsive Craft Cards Grid: Uses a single column on mobile (grid-cols-1), then scales up to 2, 3, and 4 columns on larger breakpoints. -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-4 pt-6 gsap-craft-cards-container"> <!-- Smaller gap and padding -->
+        <!-- Responsive Craft Cards Grid: Uses 2 columns on mobile (grid-cols-2), then scales up to 3 and 4 columns on larger breakpoints. -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pb-4 pt-6 gsap-craft-cards-container"> <!-- Changed to grid-cols-2 for mobile -->
             <!-- Lacquerware Card -->
             <div class="bg-white rounded-lg border border-[#E7DFDA] overflow-hidden craft-card" data-craft-type="Lacquerware">
-                <img src="https://vietnamauthentic.com/wp-content/uploads/2023/06/lacquerware-from-vietnam-05.jpg" alt="Lacquerware" class="w-full h-48 md:h-80 object-cover"> <!-- Smaller image height for mobile -->
-                <div class="p-4 flex flex-col flex-grow justify-between"> <!-- Smaller padding -->
-                    <h3 class="text-lg font-semibold text-gray-900 mb-1.5">Lacquerware</h3> <!-- Smaller font size and margin -->
-                    <p class="text-xs text-custom-grey-landing mb-3"> <!-- Smaller font size and margin -->
+                <img src="https://vietnamauthentic.com/wp-content/uploads/2023/06/lacquerware-from-vietnam-05.jpg" alt="Lacquerware" class="w-full h-32 sm:h-48 md:h-80 object-cover"> <!-- Adjusted image height for 2x2 layout -->
+                <div class="p-3 flex flex-col flex-grow justify-between"> <!-- Smaller padding -->
+                    <h3 class="text-base font-semibold text-gray-900 mb-1">Lacquerware</h3> <!-- Smaller font size and margin -->
+                    <p class="text-xs text-custom-grey-landing mb-2"> <!-- Smaller font size and margin -->
                         Exquisite bowls, trays, and decorative pieces with traditional Vietnamese lacquer techniques
                     </p>
-                    <p class="text-orange-600 font-medium text-base mb-3">120+ Items</p> <!-- Smaller font size and margin -->
-                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold flex items-center justify-end text-sm"> <!-- Smaller font size -->
-                        View Collection <i class="fas fa-arrow-right ml-1.5"></i> <!-- Smaller margin -->
+                    <p class="text-orange-600 font-medium text-sm mb-2">120+ Items</p> <!-- Smaller font size and margin -->
+                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold flex items-center justify-end text-xs"> <!-- Smaller font size -->
+                        View Collection <i class="fas fa-arrow-right ml-1"></i> <!-- Smaller margin -->
                     </a>
                 </div>
             </div>
 
             <!-- Pottery & Ceramics Card -->
             <div class="bg-white rounded-lg border border-[#E7DFDA] overflow-hidden craft-card" data-craft-type="Pottery & Ceramics">
-                <img src="https://vir.com.vn/stores/news_dataimages/Etienne/112021/17/11/4526_BPQ_phu_dung_chu_YYu_compressed.jpg?rt=20211117114724" alt="Pottery & Ceramics" class="w-full h-48 md:h-80 object-cover">
-                <div class="p-4 flex flex-col flex-grow justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-1.5">Pottery & Ceramics</h3>
-                    <p class="text-xs text-custom-grey-landing mb-3">
+                <img src="https://vir.com.vn/stores/news_dataimages/Etienne/112021/17/11/4526_BPQ_phu_dung_chu_YYu_compressed.jpg?rt=20211117114724" alt="Pottery & Ceramics" class="w-full h-32 sm:h-48 md:h-80 object-cover">
+                <div class="p-3 flex flex-col flex-grow justify-between">
+                    <h3 class="text-base font-semibold text-gray-900 mb-1">Pottery & Ceramics</h3>
+                    <p class="text-xs text-custom-grey-landing mb-2">
                         Handcrafted vases, tea sets, and artistic pieces from master potters
                     </p>
-                    <p class="text-orange-600 font-medium text-base mb-3">85+ Items</p>
-                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold flex items-center justify-end text-sm">
-                        View Collection <i class="fas fa-arrow-right ml-1.5"></i>
+                    <p class="text-orange-600 font-medium text-sm mb-2">85+ Items</p>
+                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold flex items-center justify-end text-xs">
+                        View Collection <i class="fas fa-arrow-right ml-1"></i>
                     </a>
                 </div>
             </div>
 
             <!-- Traditional Paintings Card -->
             <div class="bg-white rounded-lg border border-[#E7DFDA] overflow-hidden craft-card" data-craft-type="Traditional Paintings">
-                <img src="https://www.nguyenartgallery.com/wp-content/uploads/Material-and-Technique-used-in-Silk-Painting.jpg" alt="Traditional Paintings" class="w-full h-48 md:h-80 object-cover">
-                <div class="p-4 flex flex-col flex-grow justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-1.5">Traditional Paintings</h3>
-                    <p class="text-xs text-custom-grey-landing mb-3">
+                <img src="https://www.nguyenartgallery.com/wp-content/uploads/Material-and-Technique-used-in-Silk-Painting.jpg" alt="Traditional Paintings" class="w-full h-32 sm:h-48 md:h-80 object-cover">
+                <div class="p-3 flex flex-col flex-grow justify-between">
+                    <h3 class="text-base font-semibold text-gray-900 mb-1">Traditional Paintings</h3>
+                    <p class="text-xs text-custom-grey-landing mb-2">
                         Beautiful silk paintings and lacquer art depicting Vietnamese culture
                     </p>
-                    <p class="text-orange-600 font-medium text-base mb-3">60+ Items</p>
-                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold flex items-center justify-end text-sm">
-                        View Collection <i class="fas fa-arrow-right ml-1.5"></i>
+                    <p class="text-orange-600 font-medium text-sm mb-2">60+ Items</p>
+                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold flex items-center justify-end text-xs">
+                        View Collection <i class="fas fa-arrow-right ml-1"></i>
                     </a>
                 </div>
             </div>
 
             <!-- Handwoven Textiles Card -->
             <div class="bg-white rounded-lg border border-[#E7DFDA] overflow-hidden craft-card" data-craft-type="Handwoven Textiles">
-                <img src="https://placehold.co/600x450/A0522D/FFFFFF?text=Handwoven+Textiles" alt="Handwoven Textiles" class="w-full h-48 md:h-80 object-cover">
-                <div class="p-4 flex flex-col flex-grow justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-1.5">Handwoven Textiles</h3>
-                    <p class="text-xs text-custom-grey-landing mb-3">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThGMqrtoeHfG1SQf2Frvo5eZPtWZBjA62NQ_qW0K2mPuB2JmgSWLgqCDOSZBJ8ZBOwLQg&usqp=CAU" alt="Handwoven Textiles" class="w-full h-32 sm:h-48 md:h-80 object-cover">
+                <div class="p-3 flex flex-col flex-grow justify-between">
+                    <h3 class="text-base font-semibold text-gray-900 mb-1">Handwoven Textiles</h3>
+                    <p class="text-xs text-custom-grey-landing mb-2">
                         Intricately woven fabrics, scarves, and garments showcasing ethnic patterns.
                     </p>
-                    <p class="text-orange-600 font-medium text-base mb-3">95+ Items</p>
-                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold flex items-center justify-end text-sm">
-                        View Collection <i class="fas fa-arrow-right ml-1.5"></i>
+                    <p class="text-orange-600 font-medium text-sm mb-2">95+ Items</p>
+                    <a href="#" class="text-orange-600 hover:text-orange-800 font-semibold flex items-center justify-end text-xs">
+                        View Collection <i class="fas fa-arrow-right ml-1"></i>
                     </a>
                 </div>
             </div>
@@ -710,15 +710,15 @@
 
         // Event listener for "Browse Crafts" button
         document.getElementById('browse-crafts-btn').addEventListener('click', () => {
-            window.location.href = 'main-page.html';
+            window.location.href = 'user-main.html';
         });
 
-        // Event listener for hero search input (redirects to main-page with search query)
+        // Event listener for hero search input (redirects to user-main with search query)
         document.getElementById('hero-search-input').addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
                 const searchQuery = event.target.value;
                 if (searchQuery) {
-                    window.location.href = `main-page.html?search=${encodeURIComponent(searchQuery)}`;
+                    window.location.href = `user-main.html?search=${encodeURIComponent(searchQuery)}`;
                 }
             }
         });
@@ -729,7 +729,7 @@
                 event.preventDefault(); // Prevent default link behavior
                 const craftType = event.target.closest('.craft-card').dataset.craftType;
                 if (craftType) {
-                    window.location.href = `main-page.html?sort=${encodeURIComponent(craftType)}`;
+                    window.location.href = `user-main.html?sort=${encodeURIComponent(craftType)}`;
                 }
             });
         });
