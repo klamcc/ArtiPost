@@ -21,7 +21,7 @@
         }
         .hero-background {
             /* Updated to use "bg.png" as the background image */
-            background-image: url('bg.png'); /* Placeholder for bg.png */
+            background-image: url('https://placehold.co/1920x1080/000000/FFFFFF?text=Background+Image'); /* Placeholder for bg.png */
             background-size: cover;
             background-position: center;
             position: relative; /* Ensure main is relative for absolute positioning of children */
@@ -100,12 +100,11 @@
         }
 
         /* Craft Card Hover Effect */
-        .craft-card {   
+        .craft-card {   
             pointer-events: none; /* Disable pointer events initially */
-            flex: 1; /* Allow cards to grow and shrink, taking up equal space */
             position: relative; /* Ensure z-index works for hover effect */
             z-index: 1; /* Default z-index */
-            min-width: 200px; /* Adjust min-width to allow more shrinking if needed */
+            /* Removed flex: 1 and min-width as it's now a grid item */
         }
 
         .craft-card:hover {
@@ -128,6 +127,7 @@
             <!-- Added transition-colors to logo-text -->
             <div class="text-lg font-bold logo-text gsap-navbar-element transition-colors duration-300">Artipost</div>
             <!-- Navigation Links -->
+            <!-- Responsive Navigation: Stacks links on small screens (flex-col) and arranges them horizontally on small breakpoints (sm:flex-row). -->
             <nav class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-5 text-sm">
                 <!-- Added transition-colors to nav-link -->
                 <a href="#" class="nav-link text-white hover:text-orange-600 gsap-navbar-element transition-colors duration-300">Artisans</a>
@@ -157,10 +157,13 @@
     </header>
 
     <!-- Hero Section - Main content area with background and foreground elements -->
+    <!-- Responsive Hero Section: Uses min-h-screen for full height, adjusts padding (pl-6 md:pl-12 lg:pl-24) -->
     <main class="hero-background min-h-screen flex items-center justify-start pt-24 pb-12 relative overflow-hidden pl-6 md:pl-12 lg:pl-24">
         <!-- Container for text and foreground -->
+        <!-- Flexbox for content: stacks on mobile (flex-col) and arranges horizontally on large screens (lg:flex-row) -->
         <div class="container mx-auto flex flex-col lg:flex-row items-center justify-between relative z-10 h-[550px]">
             <!-- Text Content Column -->
+            <!-- Responsive width for text column: full width on mobile, half on large screens (lg:w-1/2) -->
             <div class="text-white text-left lg:w-1/2">
                 <!-- Authentic Tag with Star Icon -->
                 <div class="glass-effect border border-orange-700 rounded-full py-2 px-4 inline-flex items-center mb-6 gsap-hero-text">
@@ -169,6 +172,7 @@
                     </p>
                 </div>
                 <!-- Main Headline -->
+                <!-- Responsive text sizes (text-4xl md:text-5xl) -->
                 <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-5 gsap-hero-text">
                     Discover Authentic <br class="hidden md:inline"><span class="gradient-text">Vietnamese Crafts</span>
                 </h1>
@@ -177,15 +181,18 @@
                     Connect directly with skilled Vietnamese artisans. Purchase traditional lacquerware, pottery, and paintings. Safe worldwide shipping for treasures too precious to carry.
                 </p>
                 <!-- Call to Action Button and Search Input -->
+                <!-- Responsive button/input group: stacks on mobile (flex-col) and arranges horizontally on small screens (sm:flex-row) -->
                 <div class="flex flex-col sm:flex-row items-center justify-start space-y-4 sm:space-y-0 sm:space-x-4 mb-12">
                     <!-- Added transition-colors to this button -->
                     <button id="browse-crafts-btn" class="bg-orange-600 text-white px-7 py-3.5 rounded-full text-lg font-semibold shadow-xl flex items-center gsap-hero-button transition-colors duration-300 hover:bg-orange-700">
                         Browse Crafts <i class="fas fa-arrow-right ml-3"></i>
                     </button>
+                    <!-- Responsive width for input (w-full sm:w-auto) -->
                     <input type="text" id="hero-search-input" placeholder="Search for something..." class="bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-white px-5 py-3.5 rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 w-full sm:w-auto text-base gsap-hero-button">
                 </div>
 
                 <!-- Three Feature Points at the Bottom -->
+                <!-- Responsive wrapping for feature points (flex-wrap) -->
                 <div class="flex flex-wrap justify-start gap-5 text-base gsap-hero-text">
                     <div class="flex items-center space-x-2">
                         <i class="fas fa-globe text-orange-400"></i>
@@ -205,8 +212,10 @@
     </main>
 
     <!-- New Section: Explore Traditional Crafts -->
+    <!-- Responsive padding (px-2 md:px-4 lg:px-8) -->
     <section class="py-16 px-2 md:px-4 lg:px-8 bg-gray-100">
         <div class="container mx-auto text-center mb-12">
+            <!-- Responsive header text sizes (text-3xl md:text-4xl) -->
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 gsap-section-header">Explore Traditional Crafts</h2>
             <!-- Changed text size to text-base and color to custom grey -->
             <p class="text-base text-custom-grey-landing max-w-3xl mx-auto gsap-section-header">
@@ -214,8 +223,8 @@
             </p>
         </div>
 
-        <!-- Added pt-8 to give space for hover effect -->
-        <div class="flex gap-4 pb-4 pt-8 gsap-craft-cards-container flex-nowrap">
+        <!-- Responsive Craft Cards Grid: Uses a single column on mobile (grid-cols-1), then scales up to 2, 3, and 4 columns on larger breakpoints. -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-4 pt-8 gsap-craft-cards-container">
             <!-- Lacquerware Card -->
             <div class="bg-white rounded-lg border border-[#E7DFDA] overflow-hidden craft-card" data-craft-type="Lacquerware">
                 <img src="https://vietnamauthentic.com/wp-content/uploads/2023/06/lacquerware-from-vietnam-05.jpg" alt="Lacquerware" class="w-full h-80 object-cover">
@@ -279,8 +288,10 @@
     </section>
 
     <!-- New Section: How Artipost Works -->
+    <!-- Responsive padding (px-2 md:px-4 lg:px-8) -->
     <section class="py-16 px-2 md:px-4 lg:px-8" style="background-color: #F8F7F5;">
         <div class="container mx-auto text-center mb-12">
+            <!-- Responsive header text sizes (text-3xl md:text-4xl) -->
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 gsap-how-it-works-header">How Artipost Works</h2>
             <!-- Changed text size to text-base and color to custom grey -->
             <p class="text-base text-custom-grey-landing max-w-3xl mx-auto gsap-how-it-works-header">
@@ -288,6 +299,7 @@
             </p>
         </div>
 
+        <!-- Responsive grid for cards (grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 gsap-how-it-works-container">
             <!-- Discover Card -->
             <!-- Changed border-gray-200 to border-[#E7DFDA] -->
@@ -343,18 +355,18 @@
         </div>
 
         <!-- New Section: For Artisans - Integrated and smaller -->
-        <!-- Removed the container mx-auto div that was wrapping this section -->
-        <!-- Changed border-orange-200 to border-[#E7DFDA] -->
+        <!-- Responsive header text sizes (text-xl md:text-2xl) -->
         <div class="artisans-gradient-bg rounded-lg border border-[#E7DFDA] p-8 mt-16 shadow-md justify-center flex flex-col items-center">
             <h2 class="text-xl md:text-2xl font-extrabold text-gray-900 mb-4 text-center gsap-for-artisans-header">For Artisans: Share Your Craft with the World</h2>
-            <div class="w-1/2">
+            <!-- Responsive width for paragraph (w-full lg:w-1/2) -->
+            <div class="w-full lg:w-1/2">
                 <!-- Changed text size to text-base and color to custom grey -->
                 <p class="text-base text-custom-grey-landing mb-6 text-center gsap-for-artisans-content">
                     Join our platform to showcase your traditional Vietnamese crafts to international buyers. We handle the
                     technology, marketing, and shipping - you focus on creating beautiful art.
                 </p>
             </div>
-            <!-- Added bullet points as per the image -->
+            <!-- Responsive wrapping for bullet points (flex-wrap) -->
             <div class="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-gray-700 mt-4">
                 <div class="flex items-center">
                     <span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span> No listing fees
@@ -374,6 +386,7 @@
 
     <!-- Footer Section -->
     <!-- Changed footer background color to #171312 -->
+    <!-- Responsive Footer: Uses a grid system that stacks on mobile (grid-cols-1) and expands to 4 columns on medium screens (md:grid-cols-4). -->
     <footer class="bg-[#171312] text-white py-12 px-6 md:px-10">
         <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
             <!-- Artipost Column -->
@@ -515,18 +528,6 @@
             delay: 1
         });
 
-        // 4. Hero Image Reveal (scale up and fade in)
-        // Removed as the foreground image div was removed
-        /*
-        gsap.from(".gsap-hero-image", {
-            scale: 0.8, // Start smaller
-            opacity: 0,
-            duration: 1.5,
-            ease: "power3.out",
-            delay: 1.2
-        });
-        */
-
         // 5. Section Header and Paragraph (ScrollTriggered fade-in-up)
         gsap.from(".gsap-section-header", {
             y: 50,
@@ -591,95 +592,59 @@
             }
         });
 
-        // 9. New "For Artisans" Section Header (ScrollTriggered fade-in-up)
-        gsap.from(".gsap-for-artisans-header", {
+        // 9. For Artisans Section Header and Content (ScrollTriggered fade-in-up)
+        gsap.from(".gsap-for-artisans-header, .gsap-for-artisans-content", {
             y: 50,
             opacity: 0,
             duration: 1.2,
             stagger: 0.1,
             ease: "power3.out",
             scrollTrigger: {
-                trigger: ".gsap-for-artisans-header",
+                trigger: ".artisans-gradient-bg",
                 start: "top 85%",
                 toggleActions: "play none none none",
             }
         });
 
-        // 10. New "For Artisans" Section Content (ScrollTriggered fade-in-up)
-        gsap.from(".gsap-for-artisans-content", {
-            y: 50,
-            opacity: 0,
-            duration: 1.5,
-            stagger: 0.15,
-            ease: "power3.out",
-            scrollTrigger: {
-                trigger: ".gsap-for-artisans-content",
-                start: "top 80%",
-                toggleActions: "play none none none",
-            }
-        });
-
-        // 11. Footer Elements (ScrollTriggered fade-in-up)
+        // 10. Footer Elements (ScrollTriggered staggered fade-in-up)
         gsap.from(".gsap-footer-element", {
             y: 50,
             opacity: 0,
             duration: 1,
-            stagger: 0.1,
+            stagger: 0.15,
             ease: "power3.out",
             scrollTrigger: {
-                trigger: "footer", // Trigger when the footer comes into view
-                start: "top 85%",
+                trigger: "footer",
+                start: "top 90%",
                 toggleActions: "play none none none",
             }
         });
 
-        // GSAP Hover effect for craft cards
-        document.querySelectorAll('.craft-card').forEach(card => {
-            let hoverTween = gsap.to(card, {
-                y: -10, // Move up by 10px
-                boxShadow: "0 15px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.08)", // More pronounced shadow
-                duration: 0.3,
-                paused: true, // Pause it initially
-                ease: "power2.out"
-            });
-
-            card.addEventListener('mouseenter', () => hoverTween.play());
-            card.addEventListener('mouseleave', () => hoverTween.reverse());
+        // Event listener for "Browse Crafts" button
+        document.getElementById('browse-crafts-btn').addEventListener('click', () => {
+            window.location.href = 'main-page.html';
         });
 
-        // Redirect to user-main.html with search query when a craft card is clicked
-        document.querySelectorAll('.craft-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const craftType = card.dataset.craftType;
+        // Event listener for hero search input (redirects to main-page with search query)
+        document.getElementById('hero-search-input').addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                const searchQuery = event.target.value;
+                if (searchQuery) {
+                    window.location.href = `main-page.html?search=${encodeURIComponent(searchQuery)}`;
+                }
+            }
+        });
+
+        // Event listeners for "View Collection" links on craft cards
+        document.querySelectorAll('.craft-card a').forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault(); // Prevent default link behavior
+                const craftType = event.target.closest('.craft-card').dataset.craftType;
                 if (craftType) {
-                    window.location.href = `user-main.html?search=${encodeURIComponent(craftType)}`;
-                } else {
-                    window.location.href = 'user-main.html'; // Fallback if no specific type
+                    window.location.href = `main-page.html?sort=${encodeURIComponent(craftType)}`;
                 }
             });
         });
-
-        // Handle hero section search input and button
-        const heroSearchInput = document.getElementById('hero-search-input');
-        const browseCraftsBtn = document.getElementById('browse-crafts-btn');
-
-        const performSearch = () => {
-            const searchTerm = heroSearchInput.value.trim();
-            if (searchTerm) {
-                window.location.href = `user-main.html?search=${encodeURIComponent(searchTerm)}`;
-            } else {
-                window.location.href = 'user-main.html';
-            }
-        };
-
-        browseCraftsBtn.addEventListener('click', performSearch);
-        heroSearchInput.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                performSearch();
-            }
-        });
-
-        console.log("GSAP animations initiated.");
     </script>
 </body>
 </html>
