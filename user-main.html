@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ArtiPost - Your Marketplace</title>
+    <title>CraftVietnam - Your Marketplace</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter for general text -->
@@ -55,14 +55,17 @@
             background-color: #ffffff;
             border-radius: 0.75rem;
             border: 1px solid #E7DFDA;
-            overflow: hidden; /* Corrected CSS syntax */
+            overflow: hidden;
             transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* Default shadow */
-            pointer-events: auto; /* Re-enabled pointer events */
+            pointer-events: none; /* Disable pointer events initially, enabled after GSAP animation */
+            position: relative; /* Ensure z-index works for hover effect */
+            z-index: 1; /* Default z-index */
         }
         .product-card:hover {
             box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.08);
             transform: translateY(-5px);
+            z-index: 10; /* Bring hovered card to front */
         }
         /* Footer gradient text */
         .footer-gradient-text {
@@ -504,7 +507,9 @@
             accent-color: #f97316; /* Orange radio button */
         }
         #address-phone-modal .list-container, #my-orders-modal .list-container {
-            /* Removed max-height and overflow-y: auto to prevent scrollbars */
+            /* Added max-height and overflow-y: auto to enable scrolling */
+            max-height: 150px; /* Adjust as needed */
+            overflow-y: auto;
             border: 1px solid #E7DFDA;
             border-radius: 0.5rem;
             padding: 0.5rem;
@@ -658,7 +663,7 @@
     <!-- Header Section - Navbar for logged-in user -->
     <header class="main-navbar fixed top-0 left-0 right-0 z-50 py-3 px-6 md:px-10 flex items-center justify-between">
         <div class="flex items-center space-x-8">
-            <div class="text-lg font-bold logo-text">ArtiPost</div>
+            <div class="text-lg font-bold logo-text">CraftVietnam</div>
             <nav class="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-5 text-sm">
                 <a href="#" class="nav-link hover:text-orange-600">Shop</a>
                 <a href="#" class="nav-link hover:text-orange-600">Artisans</a>
@@ -742,7 +747,7 @@
         <!-- Featured Products Section -->
         <section class="container mx-auto px-4 py-8">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900">Featured Products</h2>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900" id="main-page-title">Featured Crafts</h2>
                 <span class="text-gray-600 text-sm" id="product-count">0 products found</span>
             </div>
             <!-- Moved no-items-message outside products-container -->
@@ -871,9 +876,9 @@
 
     <!-- Footer Section -->
     <footer class="bg-[#171312] text-white py-12 px-6 md:px-10 mt-auto">
-        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 footer-content-gsap">
             <div>
-                <h3 class="text-lg font-bold mb-4 footer-gradient-text">ArtiPost</h3>
+                <h3 class="text-lg font-bold mb-4 footer-gradient-text">CraftVietnam</h3>
                 <p class="text-gray-400 text-sm mb-6">
                     Connecting Vietnamese artisans with the world. Authentic traditional crafts, safely shipped to your doorstep.
                 </p>
@@ -915,7 +920,7 @@
                     </li>
                     <li class="flex items-center space-x-2 text-gray-400">
                         <i class="fas fa-envelope"></i>
-                        <a href="mailto:hello@ArtiPost.com" class="hover:text-white">hello@ArtiPost.com</a>
+                        <a href="mailto:hello@craftvietnam.com" class="hover:text-white">hello@craftvietnam.com</a>
                     </li>
                     <li class="flex items-center space-x-2 text-gray-400">
                         <i class="fas fa-phone"></i>
@@ -925,7 +930,7 @@
             </div>
         </div>
         <div class="container mx-auto text-center text-gray-500 text-xs mt-8 border-t border-gray-700 pt-6">
-            <p>&copy; 2024 ArtiPost. All rights reserved.</p>
+            <p>&copy; 2024 CraftVietnam. All rights reserved.</p>
             <div class="flex justify-center space-x-4 mt-2">
                 <a href="#" class="hover:text-white">Privacy Policy</a>
                 <a href="#" class="hover:text-white">Terms of Service</a>
@@ -934,7 +939,12 @@
         </div>
     </footer>
 
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/ScrollTrigger.min.js"></script>
+
     <script type="module">
+        // Firebase Imports
         import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getFirestore, doc, getDoc, collection, onSnapshot, addDoc, updateDoc, arrayUnion, arrayRemove, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -950,9 +960,6 @@
             appId: "1:411311658832:web:7916ad56ce15f43d263e55",
             measurementId: "G-XMB5N1R5PG"
         };
-
-        // Geoapify API Key (provided by user)
-        const GEOAPIFY_API_KEY = "3f2b658afc7b4b0a8f4a1bba19d7f7d9";
 
         let app;
         let auth;
@@ -979,6 +986,9 @@
                 app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
                 db = getFirestore(app);
+
+                // Register GSAP plugins
+                gsap.registerPlugin(ScrollTrigger);
 
                 // Listen for auth state changes to update UI and handle redirects
                 onAuthStateChanged(auth, async (user) => {
@@ -1090,7 +1100,7 @@
                 console.error("Error initializing Firebase:", error);
                 // Display a message to the user or log the error more prominently
             }
-
+            
             // Logout functionality (triggered by clicking the user icon)
             document.getElementById('user-profile-btn').addEventListener('click', () => {
                 const logoutBtn = document.getElementById('logout-btn');
@@ -1113,7 +1123,57 @@
                     // Optionally display an error message to the user
                 }
             });
+            // GSAP Animations
+            gsap.from(".main-navbar", {
+                y: -100,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power3.out"
+            });
 
+            // Search and filter section animation
+            gsap.from(".search-filter-section", {
+                y: -50,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power3.out",
+                delay: 0.2, // Delay slightly after navbar
+                scrollTrigger: {
+                    trigger: ".search-filter-section",
+                    start: "top 95%", // Trigger almost immediately
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // Featured Products header animation
+            gsap.from("#main-page-title", {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: "#main-page-title",
+                    start: "top 85%",
+                    toggleActions: "play none none none"
+                }
+            });
+
+            // Footer Elements (ScrollTriggered fade-in-up)
+            gsap.from(".footer-content-gsap > div", {
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                stagger: 0.1,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: "footer", // Trigger when the footer comes into view
+                    start: "top 85%",
+                    toggleActions: "play none none none",
+                }
+            });
+
+            console.log("GSAP animations initiated.");
+        
             // Cart sidebar functionality
             document.getElementById('cart-icon-btn').addEventListener('click', () => toggleCartSidebar(null, true)); // Pass true to force open
             document.getElementById('cart-close-btn').addEventListener('click', () => toggleCartSidebar(null, false)); // Pass false to force close
@@ -1197,13 +1257,21 @@
             const productsContainer = document.getElementById('products-container');
             const noItemsMessage = document.getElementById('no-items-message');
             const productCountSpan = document.getElementById('product-count');
-            const itemsCollectionRef = collection(db, `artifacts/${appId}/public/data/items`);
+            if (!productsContainer || !noItemsMessage || !productCountSpan) {
+                console.error("DEBUG: One or more product display elements are null in fetchFeaturedProducts!");
+                return;
+            }
 
+            productsContainer.innerHTML = '<p class="text-center text-gray-500 col-span-full">Loading products...</p>';
+            noItemsMessage.classList.add('hidden'); // Hide "No items found" while loading
+
+            const itemsCollectionRef = collection(db, `artifacts/${appId}/public/data/items`);
             onSnapshot(itemsCollectionRef, (snapshot) => {
                 allProducts = []; // Clear previous products
                 snapshot.forEach((doc) => {
                     allProducts.push({ id: doc.id, ...doc.data() });
                 });
+                console.log("Products fetched from Firestore:", allProducts);
                 applyFiltersAndSort(); // Apply filters and sort after fetching all products
             }, (error) => {
                 console.error("Error listening to featured items:", error);
@@ -1334,6 +1402,31 @@
                     productsContainer.insertAdjacentHTML('beforeend', itemCard);
                 });
 
+                // GSAP Animation for product cards
+                gsap.fromTo(".product-card",
+                    { opacity: 0, y: 50, scale: 0.95 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 1.5, /* Increased duration for smoother animation */
+                        ease: "power3.out",
+                        stagger: 0.1, // Stagger animation for each card
+                        delay: 0.2, // Small delay after content loads
+                        onComplete: function() {
+                            // Re-enable pointer events after animation completes
+                            document.querySelectorAll('.product-card').forEach(card => {
+                                card.style.pointerEvents = 'auto';
+                            });
+                        },
+                        scrollTrigger: {
+                            trigger: "#products-container",
+                            start: "top 80%", // When the top of the container hits 80% of the viewport
+                            toggleActions: "play none none none"
+                        }
+                    }
+                );
+
                 // Add event listeners to "Add to Cart" buttons
                 document.querySelectorAll('.add-to-cart-btn').forEach(button => {
                     button.addEventListener('click', (event) => {
@@ -1353,7 +1446,7 @@
         // Cart Functions
         function loadCartFromLocalStorage() {
             console.log("Attempting to load cart from local storage...");
-            const storedCart = localStorage.getItem('ArtiPost_cart');
+            const storedCart = localStorage.getItem('craftvietnam_cart');
             if (storedCart) {
                 try {
                     cart = JSON.parse(storedCart);
@@ -1371,7 +1464,7 @@
 
         function saveCartToLocalStorage() {
             console.log("Saving cart to local storage. Current cart:", JSON.stringify(cart));
-            localStorage.setItem('ArtiPost_cart', JSON.stringify(cart));
+            localStorage.setItem('craftvietnam_cart', JSON.stringify(cart));
         }
 
         function addItemToCart(item) {
@@ -1870,7 +1963,7 @@
                 };
 
                 // Store orders in user-specific collection
-                const ordersCollectionRef = collection(db, `artifacts/${appId}/users/${currentUserId}/orders`);
+                const ordersCollectionRef = collection(db, `artifacts/${appId}/public/data/orders`);
                 await addDoc(ordersCollectionRef, orderData);
 
                 console.log("Order placed successfully:", orderData);
@@ -1882,6 +1975,8 @@
 
             } catch (error) {
                 console.error("Error placing order:", error);
+                // Log the full error object for detailed debugging
+                console.error("Full error object:", JSON.stringify(error, Object.getOwnPropertyNames(error)));
                 displayMessage(`Failed to place order: ${error.message}`, "error");
             }
         }
@@ -2011,6 +2106,10 @@
             autocompleteResultsDiv.innerHTML = ''; // Clear previous results
 
             try {
+                // IMPORTANT: Replace 'YOUR_GEOAPIFY_API_KEY' with your actual Geoapify API Key
+                // You would typically store this in an environment variable or a secure configuration.
+                const GEOAPIFY_API_KEY = 'YOUR_GEOAPIFY_API_KEY'; // Placeholder - replace with your actual key
+
                 const response = await fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&apiKey=${GEOAPIFY_API_KEY}`);
                 const data = await response.json();
 

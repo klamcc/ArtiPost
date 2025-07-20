@@ -312,23 +312,32 @@
         }
 
         /* Pickup Confirmation Modal Styles */
-        #pickup-confirmation-modal {
+        #pickup-confirmation-modal, #add-product-modal { /* Combined styles for modals */
             position: fixed;
             inset: 0;
             background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
+            display: flex; /* Ensure flex for centering */
             align-items: center;
             justify-content: center;
             z-index: 1002;
             visibility: hidden;
             opacity: 0;
-            transition: visibility 0s, opacity 0.3s ease-in-out;
+            transition: opacity 0.3s ease-in-out; /* Removed visibility from transition for instant display change */
         }
-        #pickup-confirmation-modal.visible {
+        #pickup-confirmation-modal.visible, #add-product-modal.visible {
             visibility: visible;
             opacity: 1;
         }
-        #pickup-confirmation-modal > div {
+        #add-product-modal > div { /* Specific styling for add product modal content */
+            background-color: var(--color-white);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            max-width: 28rem;
+            width: 90%;
+            text-align: left; /* Changed to left for form fields */
+        }
+        #pickup-confirmation-modal > div { /* Specific styling for pickup modal content */
             background-color: var(--color-white);
             padding: 2rem;
             border-radius: 0.75rem;
@@ -336,6 +345,22 @@
             max-width: 28rem;
             width: 90%;
             text-align: center;
+        }
+
+        #add-product-modal .input-field, #add-product-modal select {
+            border: 1px solid var(--color-border-light);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            font-size: 1rem;
+            color: var(--color-dark-text);
+            outline: none;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            background-color: var(--color-white);
+        }
+        #add-product-modal .input-field:focus, #add-product-modal select:focus {
+            border-color: var(--color-primary-orange);
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
         }
 
         /* Pickup Modal Buttons */
@@ -448,7 +473,7 @@
             <section id="products-tab-content" class="product-table-card p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold text-gray-900">My Products</h2>
-                    <button class="add-product-button px-6 py-3 rounded-md font-semibold text-sm">
+                    <button class="add-product-button px-6 py-3 rounded-md font-semibold text-sm" id="add-new-product-btn">
                         <i class="fas fa-plus mr-2"></i>Add New Product
                     </button>
                 </div>
@@ -519,10 +544,63 @@
         </div>
     </div>
 
+    <!-- Add New Product Modal HTML -->
+    <div id="add-product-modal" class="hidden">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg text-left">
+            <h3 class="text-xl font-semibold text-gray-900 mb-4">Add New Product</h3>
+            <form id="add-product-form" class="space-y-4">
+                <div>
+                    <label for="item-name" class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                    <input type="text" id="item-name" name="itemName" class="input-field" placeholder="e.g., Ceramic Vase" required>
+                </div>
+                <div>
+                    <label for="item-description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea id="item-description" name="description" rows="3" class="input-field" placeholder="A brief description of your product..." required></textarea>
+                </div>
+                <div>
+                    <label for="item-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select id="item-category" name="category" class="input-field" required>
+                        <option value="">Select a category</option>
+                        <option value="Lacquerware">Lacquerware</option>
+                        <option value="Pottery & Ceramics">Pottery & Ceramics</option>
+                        <option value="Traditional Paintings">Traditional Paintings</option>
+                        <option value="Handwoven Textiles">Handwoven Textiles</option>
+                        <option value="Wood Carvings">Wood Carvings</option>
+                        <option value="Silk Products">Silk Products</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="item-price" class="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
+                        <input type="number" id="item-price" name="price" step="0.01" min="0" class="input-field" placeholder="e.g., 25.99" required>
+                    </div>
+                    <div>
+                        <label for="item-stock" class="block text-sm font-medium text-gray-700 mb-1">Stock</label>
+                        <input type="number" id="item-stock" name="stock" min="0" class="input-field" placeholder="e.g., 100" required>
+                    </div>
+                </div>
+                <div>
+                    <label for="item-image-url" class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                    <input type="url" id="item-image-url" name="imageUrl" class="input-field" placeholder="https://example.com/image.jpg">
+                </div>
+                <div>
+                    <label for="item-location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                    <input type="text" id="item-location" name="location" class="input-field" placeholder="e.g., Hanoi, Vietnam" required>
+                </div>
+                <div class="flex justify-end space-x-4 mt-6">
+                    <button type="button" id="cancel-add-product-btn" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors">Cancel</button>
+                    <button type="submit" class="add-product-button px-4 py-2 rounded-md">Add Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <script type="module">
         import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, doc, getDoc, collection, query, where, onSnapshot, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, collection, query, where, onSnapshot, updateDoc, setDoc, addDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Global variables provided by the environment
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -608,6 +686,15 @@
                     document.getElementById(`${targetTab}-tab-content`).classList.remove('hidden');
                 });
             });
+
+            // Add New Product Button Listener
+            document.getElementById('add-new-product-btn').addEventListener('click', openAddProductModal);
+
+            // Add Product Modal Cancel Button Listener
+            document.getElementById('cancel-add-product-btn').addEventListener('click', closeAddProductModal);
+
+            // Add Product Form Submission Listener
+            document.getElementById('add-product-form').addEventListener('submit', addNewProduct);
         };
 
         /**
@@ -976,6 +1063,90 @@
             document.getElementById('message-box-close').addEventListener('click', () => {
                 messageBox.classList.remove('visible');
             });
+        }
+
+        /**
+         * Opens the Add New Product modal.
+         */
+        function openAddProductModal() {
+            const modal = document.getElementById('add-product-modal');
+            modal.style.display = 'flex'; // Ensure it's displayed for centering
+            modal.classList.remove('hidden'); // Remove hidden class first
+            modal.classList.add('visible');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling background
+        }
+
+        /**
+         * Closes the Add New Product modal and clears the form.
+         */
+        function closeAddProductModal() {
+            const modal = document.getElementById('add-product-modal');
+            modal.classList.remove('visible');
+            modal.classList.add('hidden'); // Add hidden class back
+            modal.style.display = 'none'; // Ensure it's completely hidden
+            document.body.style.overflow = ''; // Re-enable scrolling
+            document.getElementById('add-product-form').reset(); // Clear form fields
+        }
+
+        /**
+         * Handles the submission of the new product form.
+         * @param {Event} event - The form submission event.
+         */
+        async function addNewProduct(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            if (!currentShopId) {
+                displayMessage("You must be logged in as a shop owner to add products.", "error");
+                return;
+            }
+
+            const form = event.target;
+            const itemName = form['itemName'].value.trim();
+            const description = form['description'].value.trim();
+            const category = form['category'].value.trim();
+            const price = parseFloat(form['price'].value);
+            const stock = parseInt(form['stock'].value, 10);
+            const imageUrl = form['imageUrl'].value.trim();
+            const location = form['location'].value.trim();
+
+            // Basic validation
+            if (!itemName || !description || !category || isNaN(price) || price <= 0 || isNaN(stock) || stock < 0 || !location) {
+                displayMessage("Please fill in all required fields with valid values.", "error");
+                return;
+            }
+
+            const newProduct = {
+                itemName,
+                description,
+                category,
+                price,
+                stock,
+                imageUrl: imageUrl || 'https://placehold.co/300x200/CCCCCC/000000?text=No+Image', // Default image if none provided
+                location,
+                shopId: currentShopId, // Associate product with the current shop owner
+                artisan: document.querySelector('.shop-profile-card h1').textContent, // Use shop name as artisan
+                createdAt: new Date().toISOString(),
+                status: 'Active', // Default status for new products
+                views: 0,
+                sales: 0,
+                rating: 0, // Initial rating
+                reviewsCount: 0, // Initial reviews count
+                isNew: true, // Mark as new
+                isFeatured: false // Not featured by default
+            };
+
+            try {
+                const itemsCollectionRef = collection(db, `artifacts/${appId}/public/data/items`);
+                await addDoc(itemsCollectionRef, newProduct);
+
+                displayMessage("Product added successfully!", "success");
+                closeAddProductModal(); // Close modal on success
+
+                // The fetchShopProducts listener will automatically update the table and total products metric
+            } catch (error) {
+                console.error("Error adding new product:", error);
+                displayMessage(`Failed to add product: ${error.message}`, "error");
+            }
         }
     </script>
 </body>
