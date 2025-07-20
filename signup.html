@@ -132,7 +132,7 @@
 </head>
 <body>
     <div class="back-link-wrapper">
-        <a href="main.html">
+        <a href="landing.html">
             <i class="fas fa-arrow-left"></i> Back to ArtiPost
         </a>
     </div>
@@ -378,7 +378,7 @@
                 userData.address = ''; // As per user's request
                 userData.phoneNumber = ''; // As per user's request
                 collectionPath = `artifacts/${appId}/users`;
-                redirectPage = 'main.html'; // Redirect to main page for buyers
+                redirectPage = 'user-main.html'; // Redirect to main page for buyers
             } else { // accountType === 'shop_owner'
                 const shopName = document.getElementById('shop-name').value;
                 const shopOwnerName = document.getElementById('shop-owner-name').value;
@@ -394,7 +394,7 @@
                 userData.shopAddress = shopAddress;
                 userData.shopPhone = shopPhone;
                 collectionPath = `artifacts/${appId}/shop_users`;
-                redirectPage = 'shop-dashboard.html'; // Redirect to shop owner dashboard
+                redirectPage = 'shop-main.html'; // Redirect to shop owner dashboard
             }
 
             try {
